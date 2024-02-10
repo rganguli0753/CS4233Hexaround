@@ -25,6 +25,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public CreatureName getCreatureAt(int x, int y) {
+
         return null;
     }
 
@@ -86,6 +87,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
+        if(getCreatureAt(x,y)==null){
+            return new MoveResponse(MoveResult.OK);
+        }
         return null;
     }
 

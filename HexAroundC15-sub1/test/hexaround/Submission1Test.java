@@ -14,10 +14,10 @@ public class Submission1Test {
 
     @Test
     void firstTest() throws IOException {
-        String hgcFile = "testConfigurations/FirstConfiguration.hgc";
+        String hgcFile = "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc";
         IHexAround1 gameManager =
             HexAroundGameBuilder.buildGameManager(
-                "testConfigurations/FirstConfiguration.hgc");
+                "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc");
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
         assertEquals(GRASSHOPPER,gameManager.getCreatureAt(5, 42));
     }
