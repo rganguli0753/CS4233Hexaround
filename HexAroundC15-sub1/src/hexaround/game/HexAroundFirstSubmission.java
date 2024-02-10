@@ -44,6 +44,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public boolean hasProperty(int x, int y, CreatureProperty property) {
+        CreatureName creature = getCreatureAt(x,y);
+
         return false;
     }
 
@@ -56,6 +58,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public boolean isOccupied(int x, int y) {
+        if(!(getCreatureAt(x,y)==null)){
+            return true;
+        }
         return false;
     }
 
