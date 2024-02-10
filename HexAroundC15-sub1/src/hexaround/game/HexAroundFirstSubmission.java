@@ -2,7 +2,11 @@ package hexaround.game;
 
 import hexaround.required.*;
 
+import java.util.HashMap;
+
 public class HexAroundFirstSubmission implements IHexAround1{
+
+    HashMap<String,CreatureName> gameCreatures = new HashMap<>();
 
     /**
      * This is the default constructor, and the only constructor
@@ -25,8 +29,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public CreatureName getCreatureAt(int x, int y) {
-
-        return null;
+        return gameCreatures.get(x+""+y+"");
     }
 
     /**
@@ -73,6 +76,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public boolean canReach(int x1, int y1, int x2, int y2) {
+        CreatureName creature = getCreatureAt(x1,y1);
         return false;
     }
 
@@ -88,6 +92,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         if(getCreatureAt(x,y)==null){
+            gameCreatures.put(x+""+y+"",creature);
             return new MoveResponse(MoveResult.OK);
         }
         return null;
