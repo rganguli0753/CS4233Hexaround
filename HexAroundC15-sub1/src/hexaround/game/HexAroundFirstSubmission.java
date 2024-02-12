@@ -85,6 +85,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
         CreatureProperty property = null;
         switch(property){
             case WALKING:
+                if(Math.abs(x2-x1)==1||Math.abs(y2-y1)==1)
+                    return true;
                 break;
             case QUEEN:
                 break;
