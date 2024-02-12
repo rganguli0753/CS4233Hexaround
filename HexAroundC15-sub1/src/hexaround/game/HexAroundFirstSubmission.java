@@ -82,6 +82,29 @@ public class HexAroundFirstSubmission implements IHexAround1{
     @Override
     public boolean canReach(int x1, int y1, int x2, int y2) {
         CreatureName creature = getCreatureAt(x1,y1);
+        CreatureProperty property = null;
+        switch(property){
+            case WALKING:
+                break;
+            case QUEEN:
+                break;
+            case FLYING:
+                break;
+            case JUMPING:
+                break;
+            case RUNNING:
+                break;
+            case HATCHING:
+                break;
+            case KAMIKAZE:
+                break;
+            case SWAPPING:
+                break;
+            case TRAPPING:
+                break;
+            case INTRUDING:
+                break;
+        }
         return false;
     }
 
