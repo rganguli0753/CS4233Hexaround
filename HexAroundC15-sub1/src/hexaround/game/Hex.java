@@ -17,10 +17,18 @@ public class Hex {
         this.y = y;
     }
 
-    public Hex(CreatureName creature, Hex coord) {
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Hex (CreatureName creature, Hex coord){
         this.creature = creature;
-        this.x = coord.x;
-        this.y = coord.y;
+        this.x = coord.getX();
+        this.y = coord.getY();
     }
 
     public void  move(int x, int y){
