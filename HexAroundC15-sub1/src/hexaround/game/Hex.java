@@ -27,4 +27,14 @@ public class Hex {
     public CreatureName getCreature() {
         return creature;
     }
+
+    public int getDistance(Hex otherCoord){
+        int deltaX = x-otherCoord.x;
+        int deltaY = y- otherCoord.y;
+        int sign = deltaY*deltaX;
+        if(sign<0){
+            return Math.max(Math.abs(deltaX),Math.abs(deltaY));
+        }
+        return Math.abs(deltaX+deltaY);
+    }
 }

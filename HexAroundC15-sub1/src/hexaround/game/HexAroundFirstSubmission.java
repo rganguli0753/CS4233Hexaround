@@ -137,7 +137,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        if(getCreatureAt(x,y)==null){
+        if(!isOccupied(x,y)){
             gameCreatures.put(x+""+y+"",creature);
             return new MoveResponse(MoveResult.OK);
         }
