@@ -12,8 +12,6 @@ import java.util.Hashtable;
 
 public class HexAroundFirstSubmission implements IHexAround1{
 
-    HashMap<String,CreatureName> gameCreatures = new HashMap<>();
-
     private Dictionary<PlayerName, PlayerConfiguration> playerInf = new Hashtable<>();
     private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
     private gameBoard board;
@@ -27,11 +25,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     public HexAroundFirstSubmission() {
         // Nothing to do.
+        board = new gameBoard();
     }
 
-    public HashMap<String, CreatureName> getGameCreatures() {
-        return gameCreatures;
-    }
 
     public Dictionary<PlayerName, PlayerConfiguration> getPlayerInf() {
         return playerInf;
@@ -120,7 +116,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        board.placePiece(creature, new Hex(x,y));
+        Hex spot = new Hex(x,y);
+        board.placePiece(creature, spot);
         return new MoveResponse(MoveResult.OK);
     }
 

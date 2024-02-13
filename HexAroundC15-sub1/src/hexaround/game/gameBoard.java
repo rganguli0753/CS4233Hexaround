@@ -7,8 +7,15 @@ import hexaround.required.*;
 public class gameBoard {
     private Collection<Hex> hexBoard = new ArrayList<>();
 
+    public gameBoard(){}
+
+
     public Collection<Hex> getHexBoard() {
         return hexBoard;
+    }
+
+    public void addBoard(Hex hex){
+        hexBoard.add(hex);
     }
     public void placePiece(CreatureName creature,Hex coord){
         hexBoard.add(new Hex(creature,coord));
