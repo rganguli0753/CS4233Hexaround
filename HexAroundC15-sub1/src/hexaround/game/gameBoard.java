@@ -33,7 +33,7 @@ public class gameBoard {
         Hex spot = new Hex(x,y);
         for(Hex coords: this.hexBoard){
             if (coords.getDistance(spot)==0)
-                return spot;
+                return coords;
         }
         return null;
     }

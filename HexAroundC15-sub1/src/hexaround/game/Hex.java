@@ -41,8 +41,8 @@ public class Hex {
     }
 
     public int getDistance(Hex otherCoord){
-        int deltaX = x-otherCoord.x;
-        int deltaY = y- otherCoord.y;
+        int deltaX = getX() - otherCoord.getX();
+        int deltaY = getY() - otherCoord.getY();
         int sign = deltaY*deltaX;
         if(sign<0){
             return Math.max(Math.abs(deltaX),Math.abs(deltaY));
