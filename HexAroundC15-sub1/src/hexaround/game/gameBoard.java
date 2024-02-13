@@ -10,8 +10,8 @@ public class gameBoard {
     public Collection<Hex> getHexBoard() {
         return hexBoard;
     }
-    public void placePiece(Hex coord){
-        hexBoard.add(coord);
+    public void placePiece(CreatureName creature,Hex coord){
+        hexBoard.add(new Hex(creature,coord));
     }
 
     public boolean isOccupied(int x, int y){

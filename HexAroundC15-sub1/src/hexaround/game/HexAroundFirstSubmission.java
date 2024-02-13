@@ -41,8 +41,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
         return creatureInf;
     }
 
-    public Collection<Hex> getBoard() {
-        return board.getHexBoard();
+    public gameBoard getBoard() {
+        return board;
     }
 
     /**
@@ -55,7 +55,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public CreatureName getCreatureAt(int x, int y) {
-        return gameCreatures.get(x+""+y+"");
+        return board.getHex(x,y).getCreature();
     }
 
     /**
@@ -84,10 +84,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public boolean isOccupied(int x, int y) {
-        if(!(getCreatureAt(x,y)==null)){
-            return true;
-        }
-        return false;
+        return board.isOccupied(x,y);
     }
 
     /**
@@ -101,28 +98,14 @@ public class HexAroundFirstSubmission implements IHexAround1{
      * @param y1
      * @param x2
      * @param y2
-     * @return itrue if the distance between the two hexes is less
+     * @return true if the distance between the two hexes is less
      * than or equal to the maximum distance property for the piece
      * at (x1, y1). Return false otherwise.
      */
     @Override
     public boolean canReach(int x1, int y1, int x2, int y2) {
-        CreatureName creature = getCreatureAt(x1,y1);
-        CreatureProperty property = null;
-        switch(property){
-            case WALKING, QUEEN:
-                if(Math.abs(x2-x1)==1||Math.abs(y2-y1)==1)
-                    return true;
-                break;
-            case FLYING:
-                break;
-            case JUMPING:
-                break;
-            case RUNNING:
-                break;
-            case INTRUDING:
-                break;
-        }
+
+
         return false;
     }
 
@@ -137,11 +120,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        if(!isOccupied(x,y)){
-            gameCreatures.put(x+""+y+"",creature);
-            return new MoveResponse(MoveResult.OK);
-        }
-        return null;
+        board.placePiece(creature, new Hex(x,y));
+        return new MoveResponse(MoveResult.OK);
     }
 
     /**
