@@ -1,12 +1,22 @@
 package hexaround.game;
 
+import hexaround.config.CreatureDefinition;
+import hexaround.config.PlayerConfiguration;
 import hexaround.required.*;
+import hexaround.game.Hex;
 
+import java.util.Collection;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 public class HexAroundFirstSubmission implements IHexAround1{
 
     HashMap<String,CreatureName> gameCreatures = new HashMap<>();
+
+    private Dictionary<PlayerName, PlayerConfiguration> playerInf = new Hashtable<>();
+    private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
+    private gameBoard board;
 
     /**
      * This is the default constructor, and the only constructor
@@ -17,6 +27,22 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     public HexAroundFirstSubmission() {
         // Nothing to do.
+    }
+
+    public HashMap<String, CreatureName> getGameCreatures() {
+        return gameCreatures;
+    }
+
+    public Dictionary<PlayerName, PlayerConfiguration> getPlayerInf() {
+        return playerInf;
+    }
+
+    public Dictionary<CreatureName, CreatureDefinition> getCreatureInf() {
+        return creatureInf;
+    }
+
+    public Collection<Hex> getBoard() {
+        return board.getHexBoard();
     }
 
     /**
