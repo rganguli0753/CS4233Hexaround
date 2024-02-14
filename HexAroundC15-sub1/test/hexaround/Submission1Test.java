@@ -13,13 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Submission1Test {
     HexAroundFirstSubmission gameManager = null;
-    HexAroundConfigurationMaker configurationMaker;
-    GameConfiguration configuration;
+
 
     void build() throws IOException {
         String hgcFile = "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc";
-        configurationMaker = new HexAroundConfigurationMaker(hgcFile);
-        configuration = configurationMaker.makeConfiguration();
         this.gameManager =
                 (HexAroundFirstSubmission) HexAroundGameBuilder.buildGameManager(
                         "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc");
@@ -49,7 +46,6 @@ public class Submission1Test {
     @Test
     void propertyTestFalse() throws IOException{
         build();
-        gameManager.setCreatureInf(configuration.creatures());
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
         assertFalse(gameManager.hasProperty(5,42, CreatureProperty.WALKING));
     }
@@ -57,7 +53,6 @@ public class Submission1Test {
     @Test
     void propertyTestTrue() throws IOException{
         build();
-        gameManager.setCreatureInf(configuration.creatures());
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
         assertTrue(gameManager.hasProperty(5,42, CreatureProperty.JUMPING));
         assertTrue(gameManager.hasProperty(5,42, CreatureProperty.INTRUDING));
@@ -66,7 +61,6 @@ public class Submission1Test {
     @Test
     void canReachFalse() throws IOException{
         build();
-        gameManager.setCreatureInf(configuration.creatures());
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
         assertFalse(gameManager.canReach(5,42,5,50));
     }
@@ -74,7 +68,6 @@ public class Submission1Test {
     @Test
     void canReachTrue() throws IOException{
         build();
-        gameManager.setCreatureInf(configuration.creatures());
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
         assertTrue(gameManager.canReach(5,42,5,45));
     }
