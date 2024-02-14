@@ -44,4 +44,5 @@ public class Hex {
         }
         return Math.abs(deltaX+deltaY);
     }
+
 }

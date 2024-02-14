@@ -12,8 +12,8 @@ import java.util.Hashtable;
 
 public class HexAroundFirstSubmission implements IHexAround1{
 
-    private Dictionary<PlayerName, PlayerConfiguration> playerInf = new Hashtable<>();
     private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
+    private Dictionary<String, CreatureName> creatureLoc= new Hashtable<>();
     private gameBoard board;
 
     /**
@@ -25,16 +25,22 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     public HexAroundFirstSubmission() {
         // Nothing to do.
+
         board = new gameBoard();
-    }
-
-
-    public Dictionary<PlayerName, PlayerConfiguration> getPlayerInf() {
-        return playerInf;
     }
 
     public Dictionary<CreatureName, CreatureDefinition> getCreatureInf() {
         return creatureInf;
+    }
+
+    public void setCreatureInf(Collection<CreatureDefinition> defs) {
+       for(CreatureDefinition def: defs){
+           creatureInf.put(def.name(),def);
+       }
+    }
+
+    public Dictionary<String, CreatureName> getCreatureLoc() {
+        return creatureLoc;
     }
 
     public gameBoard getBoard() {
@@ -100,9 +106,10 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public boolean canReach(int x1, int y1, int x2, int y2) {
-
-
-        return false;
+        Hex fromCoord = new Hex(x1,y1);
+        Hex toCoord = new Hex(x2,y2);
+        int maxDist = creatureInf.get(creatureLoc.get(""+x1+""+y1)).maxDistance();
+        return board.reachable(fromCoord,toCoord, maxDist);
     }
 
     /**
@@ -118,6 +125,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
         board.placePiece(creature, spot);
+        if(creatureLoc.get(""+x+""+y)==null){
+            creatureLoc.put(""+x+""+y,creature);
+        }
         return new MoveResponse(MoveResult.OK);
     }
 

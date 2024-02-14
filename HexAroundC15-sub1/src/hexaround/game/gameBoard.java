@@ -34,5 +34,10 @@ public class gameBoard {
         return null;
     }
 
+    public boolean reachable(Hex from, Hex to, int maxDist){
+        int dist = from.getDistance(to);
+        return maxDist>=dist;
+    }
+
 
 }
