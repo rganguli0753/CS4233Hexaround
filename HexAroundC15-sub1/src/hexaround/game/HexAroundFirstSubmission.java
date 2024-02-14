@@ -69,8 +69,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
     @Override
     public boolean hasProperty(int x, int y, CreatureProperty property) {
         CreatureName creature = getCreatureAt(x,y);
-
-        return false;
+        return board.propertyExist(creatureInf.get(creature),property);
     }
 
     /**

@@ -2,6 +2,8 @@ package hexaround.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import hexaround.config.CreatureDefinition;
 import hexaround.required.*;
 
 public class gameBoard {
@@ -38,6 +40,15 @@ public class gameBoard {
         int dist = from.getDistance(to);
         return maxDist>=dist;
     }
+
+    public boolean propertyExist(CreatureDefinition def, CreatureProperty prop){
+        for(CreatureProperty p: def.properties()){
+            if(p.toString().equals(prop.toString()))
+                return true;
+        }
+        return false;
+    }
+
 
 
 }
