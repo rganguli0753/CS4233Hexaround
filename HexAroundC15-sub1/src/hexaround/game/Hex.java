@@ -31,15 +31,19 @@ public class Hex {
         this.y = coord.getY();
     }
 
+    public void setCreature(CreatureName creature) {
+        this.creature = creature;
+    }
+
     public CreatureName getCreature() {
-        return creature;
+        return creature;//on the certain hex is stored the certain creature
     }
 
     public int getDistance(Hex otherCoord){
         int deltaX = getX() - otherCoord.getX();
         int deltaY = getY() - otherCoord.getY();
         int sign = deltaY*deltaX;
-        if(sign<0){
+        if(sign<0){//if its negative the best choice is either the max of x or y
             return Math.max(Math.abs(deltaX),Math.abs(deltaY));
         }
         return Math.abs(deltaX+deltaY);

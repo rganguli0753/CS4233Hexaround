@@ -9,23 +9,23 @@ import hexaround.required.*;
 public class gameBoard {
     private Collection<Hex> hexBoard = new ArrayList<>();
 
-    public gameBoard(){}
+    public gameBoard(){}//used to just make an empty in the constructor so not null
 
 
     public Collection<Hex> getHexBoard() {
-        return hexBoard;
+        return hexBoard;//getter for future use although not used now
     }
     public void placePiece(CreatureName creature,Hex coord){
-        hexBoard.add(new Hex(creature,coord));
+        hexBoard.add(new Hex(creature,coord));//specific addition for the placing creature
     }
 
     public void addBoard(Hex hex){
-        hexBoard.add(hex);
+        hexBoard.add(hex);//not used but needed if making place without creature
     }
 
     public boolean isOccupied(int x, int y){
         Hex checkCoord = new Hex(x,y);
-        for(Hex coord: this.hexBoard)
+        for(Hex coord: this.hexBoard)//checks if the distance between what is being checked
             if(coord.getDistance(checkCoord)==0)
                 return true;
         return false;
@@ -33,7 +33,7 @@ public class gameBoard {
 
     public Hex getHex(int x, int y){
         Hex spot = new Hex(x,y);
-        for(Hex coords: this.hexBoard){
+        for(Hex coords: this.hexBoard){//returns specific spot if distance checked is zero
             if (coords.getDistance(spot)==0)
                 return coords;
         }
@@ -52,7 +52,5 @@ public class gameBoard {
         }
         return false;
     }
-
-
 
 }
