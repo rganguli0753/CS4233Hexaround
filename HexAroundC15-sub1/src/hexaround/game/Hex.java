@@ -31,11 +31,6 @@ public class Hex {
         this.y = coord.getY();
     }
 
-    public void  move(int x, int y){
-        this.x=x;
-        this.y=y;
-    }
-
     public CreatureName getCreature() {
         return creature;
     }
