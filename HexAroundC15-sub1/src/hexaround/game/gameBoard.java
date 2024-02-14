@@ -25,8 +25,8 @@ public class gameBoard {
         Hex checkCoord = new Hex(x,y);
         for(Hex coord: this.hexBoard)
             if(coord.getDistance(checkCoord)==0)
-                return false;
-        return true;
+                return true;
+        return false;
     }
 
     public Hex getHex(int x, int y){
