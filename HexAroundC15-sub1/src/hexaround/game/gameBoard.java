@@ -19,6 +19,10 @@ public class gameBoard {
         hexBoard.add(new Hex(creature,coord));
     }
 
+    public void addBoard(Hex hex){
+        hexBoard.add(hex);
+    }
+
     public boolean isOccupied(int x, int y){
         Hex checkCoord = new Hex(x,y);
         for(Hex coord: this.hexBoard)
