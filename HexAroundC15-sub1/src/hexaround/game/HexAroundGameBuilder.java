@@ -27,12 +27,12 @@ public class HexAroundGameBuilder {
         HexAroundConfigurationMaker configurationMaker =
             new HexAroundConfigurationMaker(configurationFile);
         GameConfiguration configuration = configurationMaker.makeConfiguration();
-        IHexAround1 gameManager = new HexAroundFirstSubmission();    // an empty game manager
+        HexAroundFirstSubmission gameManager = new HexAroundFirstSubmission();   // an empty game manager
 
         // TODO: Use the configuration to build your game manager
         // Make the code readable and use helper methods as needed.
         // Add setters and getters to the game manager that the builder calls.
-
+        gameManager.setCreatureInf(configuration.creatures());
 
         return gameManager;
     }
