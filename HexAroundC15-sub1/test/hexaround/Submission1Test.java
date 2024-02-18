@@ -3,7 +3,7 @@ package hexaround;
 import hexaround.config.GameConfiguration;
 import hexaround.config.HexAroundConfigurationMaker;
 import hexaround.game.*;
-import hexaround.required.CreatureProperty;
+import hexaround.required.*;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
@@ -72,5 +72,12 @@ public class Submission1Test {
         assertTrue(gameManager.canReach(5,42,5,45));
     }
 
+    @Test
+    void someTest(MoveResult result, String msg) {
+        //makeFirstMoves();   // place all of the creatures
+        MoveResponse mr = gameManager.moveCreature(CRAB, 1, 1, 2, 2);
+        assertEquals(result, mr.moveResult());
+        assertEquals(msg, mr.message());
+    }
 
 }
