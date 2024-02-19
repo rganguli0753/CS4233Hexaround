@@ -53,8 +53,14 @@ public class gameBoard {
         return false;
     }
 
-    public void moveCreature(CreatureName creature, int fromx, int fromy, int tox, int toy, CreatureDefinition def){
-        
+    public MoveResponse moveCreature(CreatureName creature, int fromx, int fromy, int tox, int toy, int dist){
+        if(!isOccupied(fromx,fromy))
+            return new MoveResponse(MoveResult.MOVE_ERROR,"PIECE IS MISSING");
+        if(isOccupied(tox,toy))
+            return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT IS OCCUPIED");
+        if(!reachable(new Hex(fromx,fromy),new Hex(tox,toy),dist))
+            return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT TOO FAR");
+        return new MoveResponse(MoveResult.OK);
     }
 
 }
