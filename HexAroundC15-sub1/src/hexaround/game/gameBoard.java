@@ -53,7 +53,8 @@ public class gameBoard {
         return false;
     }
 
-    public void moveCreature(CreatureName creature, int fromx, int fromy, int tox, int toy){
+    public void moveCreature(CreatureName creature, int fromx, int fromy, int tox, int toy, CreatureDefinition def){
+        
     }
 
 }

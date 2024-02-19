@@ -15,6 +15,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
     private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
     private gameBoard board;
 
+    private int turnNum;
+
     /**
      * This is the default constructor, and the only constructor
      * that you can use. The builder creates an instance using
@@ -24,7 +26,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     public HexAroundFirstSubmission() {
         // Nothing to do.
-
+        turnNum=1;
         board = new gameBoard();
     }
 
@@ -134,8 +136,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
+        CreatureDefinition def = creatureInf.get(getCreatureAt(fromX,fromY));
         if(canReach(fromX,fromY,toX,toY)){
-            board.moveCreature(creature,fromX,fromY,toX,toY);
+            board.moveCreature(creature,fromX,fromY,toX,toY,def);
         }
         return null;
     }
