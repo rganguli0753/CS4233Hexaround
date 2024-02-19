@@ -134,6 +134,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
+        if(canReach(fromX,fromY,toX,toY)){
+            board.moveCreature(creature,fromX,fromY,toX,toY);
+        }
         return null;
     }
 }
