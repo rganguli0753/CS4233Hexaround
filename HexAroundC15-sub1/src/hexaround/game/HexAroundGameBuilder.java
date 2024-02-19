@@ -33,6 +33,7 @@ public class HexAroundGameBuilder {
         // Make the code readable and use helper methods as needed.
         // Add setters and getters to the game manager that the builder calls.
         gameManager.setCreatureInf(configuration.creatures());
+        gameManager.setPlayerInfo(configuration.players());
 
         return gameManager;
     }

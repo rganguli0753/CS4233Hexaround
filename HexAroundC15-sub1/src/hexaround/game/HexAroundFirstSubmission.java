@@ -3,19 +3,18 @@ package hexaround.game;
 import hexaround.config.CreatureDefinition;
 import hexaround.config.PlayerConfiguration;
 import hexaround.required.*;
-import hexaround.game.Hex;
 
 import java.util.Collection;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Hashtable;
 
 public class HexAroundFirstSubmission implements IHexAround1{
 
     private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
     private gameBoard board;
+    private PlayerName turnNum;
+    private Dictionary<PlayerName,PlayerConfiguration> playerInf = new Hashtable<>();
 
-    private int turnNum;
 
     /**
      * This is the default constructor, and the only constructor
@@ -26,8 +25,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
      */
     public HexAroundFirstSubmission() {
         // Nothing to do.
-        turnNum=1;
         board = new gameBoard();
+        turnNum = PlayerName.BLUE;
     }
 
     public Dictionary<CreatureName, CreatureDefinition> getCreatureInf() {
@@ -38,6 +37,11 @@ public class HexAroundFirstSubmission implements IHexAround1{
        for(CreatureDefinition def: defs){
            creatureInf.put(def.name(),def);
        }
+    }
+
+    public void setPlayerInfo(Collection<PlayerConfiguration> players){
+        for(PlayerConfiguration player: players)
+            playerInf.put(player.Player(),player);
     }
 
 
@@ -143,3 +147,4 @@ public class HexAroundFirstSubmission implements IHexAround1{
         return null;
     }
 }
+
