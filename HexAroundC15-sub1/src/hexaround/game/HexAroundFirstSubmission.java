@@ -141,6 +141,8 @@ public class HexAroundFirstSubmission implements IHexAround1{
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
         int creaturedist = creatureInf.get(getCreatureAt(fromX,fromY)).maxDistance();
+        if(creature!=getCreatureAt(fromX,fromY))
+            return new MoveResponse(MoveResult.MOVE_ERROR,"INCORRECT CREATURE MOVEMENT");
         return board.moveCreature(creature,fromX,fromY,toX,toY, creaturedist);
     }
 }

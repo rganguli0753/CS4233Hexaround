@@ -60,6 +60,7 @@ public class gameBoard {
             return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT IS OCCUPIED");
         if(!reachable(new Hex(fromx,fromy),new Hex(tox,toy),dist))
             return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT TOO FAR");
+
         return new MoveResponse(MoveResult.OK);
     }
 
