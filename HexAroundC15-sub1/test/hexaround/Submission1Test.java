@@ -23,10 +23,9 @@ public class Submission1Test {
     }
 
     void makeFirstMoves() throws IOException {
-        String hgcFile = "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc";
-        this.gameManager =
-                (HexAroundFirstSubmission) HexAroundGameBuilder.buildGameManager(
-                        "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc");
+        build();
+        gameManager.placeCreature(GRASSHOPPER,1,1);
+        gameManager.placeCreature(BUTTERFLY,2,1);
 
     }
 
@@ -81,9 +80,11 @@ public class Submission1Test {
     }
 
     @Test
-    void someTest(MoveResult result, String msg) throws IOException {
-        makeFirstMoves();   // place all of the creatures
-        MoveResponse mr = gameManager.moveCreature(CRAB, 1, 1, 2, 2);
+    void someMovementTest() throws IOException {
+        makeFirstMoves();
+        MoveResult result = MoveResult.OK;
+        String msg = null;
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 2, 2);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
