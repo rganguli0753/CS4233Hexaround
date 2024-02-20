@@ -89,4 +89,37 @@ public class Submission1Test {
         assertEquals(msg, mr.message());
     }
 
+    @Test
+    void illegalTooFarMoveTest() throws IOException{
+        makeFirstMoves();
+        MoveResult result = MoveResult.MOVE_ERROR;
+        String msg = "SPOT TOO FAR";
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 50, 2);
+        assertEquals(result, mr.moveResult());
+        assertEquals(msg, mr.message());
+    }
+
+    @Test
+    void illegalOccupiedMoveTest() throws IOException{
+        makeFirstMoves();
+        MoveResult result = MoveResult.MOVE_ERROR;
+        String msg = "SPOT IS OCCUPIED";
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 2, 1);
+        assertEquals(result, mr.moveResult());
+        assertEquals(msg, mr.message());
+    }
+
+    @Test
+    void pieceMissingTest() throws IOException{//This test does not pass because it doesnt check if theres no piece at loc rn
+        makeFirstMoves();
+        MoveResult result = MoveResult.MOVE_ERROR;
+        String msg = "PIECE IS MISSING";
+        gameManager.moveCreature(GRASSHOPPER, 1, 1, 2, 1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 3, 1);
+        assertEquals(result, mr.moveResult());
+        assertEquals(msg, mr.message());
+    }
+
+    
+
 }
