@@ -44,6 +44,13 @@ public class HexAroundFirstSubmission implements IHexAround1{
             playerInf.put(player.Player(),player);
     }
 
+    private void changePlayerTurn() {
+        if(turnNum==PlayerName.BLUE)
+            turnNum = PlayerName.RED;
+        else
+            turnNum = PlayerName.BLUE;
+    }
+
 
     public gameBoard getBoard() {
         return board;
@@ -126,8 +133,17 @@ public class HexAroundFirstSubmission implements IHexAround1{
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
         board.placePiece(creature, spot);
-        return new MoveResponse(MoveResult.OK);
+        if(playerInf.get(turnNum).creatures().containsKey(creature)){
+            if(board.isOccupied(x,y)){
+                board.placePiece(creature, spot);
+                changePlayerTurn();
+                return new MoveResponse(MoveResult.OK);
+            }
+        }
+        return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE");
     }
+
+
 
     /**
      * This is never used in this submission. You do not have to do anything.
