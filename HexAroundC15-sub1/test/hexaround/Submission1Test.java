@@ -94,7 +94,7 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "SPOT TOO FAR";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 50, 2);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 5, 2);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
@@ -126,6 +126,16 @@ public class Submission1Test {
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "INCORRECT CREATURE MOVEMENT";
         MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 2, 1, 3, 1);
+        assertEquals(result, mr.moveResult());
+        assertEquals(msg, mr.message());
+    }
+
+    @Test
+    void willDisconnect() throws IOException{
+        makeFirstMoves();
+        MoveResult result = MoveResult.MOVE_ERROR;
+        String msg = "WILL DISCONNECT";
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 4, 1);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
