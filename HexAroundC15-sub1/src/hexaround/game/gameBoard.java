@@ -64,7 +64,6 @@ public class gameBoard {
     }
 
     public boolean isDisconnected(int tox, int toy){
-        Hex result = new Hex(tox,toy);
         for(Hex coord: hexBoard){
             if((tox<=coord.getX()+1&&tox>=coord.getX()-1)&&(toy<=coord.getY()+1&&toy>=coord.getY()-1)){
                 return false;
