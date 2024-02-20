@@ -14,6 +14,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
     private gameBoard board;
     private PlayerName turnNum;
     private Dictionary<PlayerName,PlayerConfiguration> playerInf = new Hashtable<>();
+    int numPlace;
 
 
     /**
@@ -27,6 +28,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
         // Nothing to do.
         board = new gameBoard();
         turnNum = PlayerName.BLUE;
+        numPlace=0;
     }
 
     public Dictionary<CreatureName, CreatureDefinition> getCreatureInf() {
@@ -132,9 +134,14 @@ public class HexAroundFirstSubmission implements IHexAround1{
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
-        board.placePiece(creature, spot);
+        if(numPlace==0) {
+            board.placePiece(creature, new Hex(0, 0));
+            numPlace++;
+            changePlayerTurn();
+            return new MoveResponse(MoveResult.OK);
+        }
         if(playerInf.get(turnNum).creatures().containsKey(creature)){
-            if(board.isOccupied(x,y)){
+            if(!board.isOccupied(x,y)){
                 board.placePiece(creature, spot);
                 changePlayerTurn();
                 return new MoveResponse(MoveResult.OK);

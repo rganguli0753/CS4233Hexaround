@@ -26,6 +26,7 @@ public class Submission1Test {
         build();
         gameManager.placeCreature(GRASSHOPPER,1,1);
         gameManager.placeCreature(BUTTERFLY,2,1);
+        gameManager.placeCreature(BUTTERFLY,5,1);
 
     }
 
@@ -33,7 +34,7 @@ public class Submission1Test {
     void firstTest() throws IOException {
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertEquals(GRASSHOPPER,gameManager.getCreatureAt(5, 42));
+        assertEquals(GRASSHOPPER,gameManager.getCreatureAt(0, 0));
     }
 
     @Test
@@ -47,36 +48,36 @@ public class Submission1Test {
     void occupiedTestIs() throws IOException{
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.isOccupied(5,42));
+        assertTrue(gameManager.isOccupied(0,0));
     }
 
     @Test
     void propertyTestFalse() throws IOException{
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertFalse(gameManager.hasProperty(5,42, CreatureProperty.WALKING));
+        assertFalse(gameManager.hasProperty(0,0, CreatureProperty.WALKING));
     }
 
     @Test
     void propertyTestTrue() throws IOException{
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.hasProperty(5,42, CreatureProperty.JUMPING));
-        assertTrue(gameManager.hasProperty(5,42, CreatureProperty.INTRUDING));
+        assertTrue(gameManager.hasProperty(0,0, CreatureProperty.JUMPING));
+        assertTrue(gameManager.hasProperty(0,0, CreatureProperty.INTRUDING));
     }
 
     @Test
     void canReachFalse() throws IOException{
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertFalse(gameManager.canReach(5,42,5,50));
+        assertFalse(gameManager.canReach(0,0,5,50));
     }
 
     @Test
     void canReachTrue() throws IOException{
         build();
         gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.canReach(5,42,5,45));
+        assertTrue(gameManager.canReach(0,0,3,0));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.OK;
         String msg = null;
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 2, 2);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, -1, 1);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
@@ -94,7 +95,7 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "SPOT TOO FAR";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 5, 2);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 5, 2);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
@@ -104,7 +105,7 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "SPOT IS OCCUPIED";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 2, 1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 2, 1);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }
@@ -135,9 +136,16 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "WILL DISCONNECT";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 4, 1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, -2, 1);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
+    }
+
+
+    @Test
+    void getPlayerTurn() throws IOException{
+        makeFirstMoves();
+        assertEquals(PlayerName.RED,gameManager.getTurnNum());
     }
 
 }
