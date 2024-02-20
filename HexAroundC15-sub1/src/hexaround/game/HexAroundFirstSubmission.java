@@ -146,6 +146,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
          */
         if(!isOccupied(fromX,fromY)|| getCreatureAt(fromX,fromY)==null)
             return new MoveResponse(MoveResult.MOVE_ERROR,"PIECE IS MISSING");
+
         if(isOccupied(toX,toY))
             return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT IS OCCUPIED");
 
@@ -154,8 +155,10 @@ public class HexAroundFirstSubmission implements IHexAround1{
 
         if(!board.reachable(new Hex(fromX, fromY), new Hex(toX, toY), creaturedist))
             return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT TOO FAR");
+
         if(board.isDisconnected(toX,toY))
             return new MoveResponse(MoveResult.MOVE_ERROR,"WILL DISCONNECT");
+
         if(creature!=getCreatureAt(fromX,fromY))
             return new MoveResponse(MoveResult.MOVE_ERROR,"INCORRECT CREATURE MOVEMENT");
 
