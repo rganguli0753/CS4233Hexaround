@@ -110,7 +110,7 @@ public class Submission1Test {
     }
 
     @Test
-    void pieceMissingTest() throws IOException{//This test does not pass because it doesnt check if theres no piece at loc rn
+    void pieceMissingTest() throws IOException{
         makeFirstMoves();
         MoveResult result = MoveResult.MOVE_ERROR;
         String msg = "PIECE IS MISSING";
