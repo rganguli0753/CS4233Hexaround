@@ -49,4 +49,8 @@ public class Hex {
         return Math.abs(deltaX+deltaY);
     }
 
+    public void changeLoc(int tox, int toy) {
+        this.x = tox;
+        this.y = toy;
+    }
 }

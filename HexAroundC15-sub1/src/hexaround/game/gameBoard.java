@@ -53,4 +53,13 @@ public class gameBoard {
         return false;
     }
 
+    public void updateLocation(int fromx, int fromy, int tox, int toy){
+        Hex currentSpot = new Hex(fromx,fromy);
+        for(Hex coord: hexBoard){
+            if(coord.getDistance(currentSpot)==0){
+                coord.changeLoc(tox,toy);
+            }
+        }
+    }
+
 }

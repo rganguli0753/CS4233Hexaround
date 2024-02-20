@@ -149,7 +149,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
             return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT TOO FAR");
         if(creature!=getCreatureAt(fromX,fromY))
             return new MoveResponse(MoveResult.MOVE_ERROR,"INCORRECT CREATURE MOVEMENT");
-        
+
         return new MoveResponse(MoveResult.OK);
     }
 }
