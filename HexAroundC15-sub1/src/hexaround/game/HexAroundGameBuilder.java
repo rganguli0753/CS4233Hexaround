@@ -29,7 +29,7 @@ public class HexAroundGameBuilder {
         GameConfiguration configuration = configurationMaker.makeConfiguration();
         HexAroundFirstSubmission gameManager = new HexAroundFirstSubmission();   // an empty game manager
 
-        // TODO: Use the configuration to build your game manager
+        // TODO: Change the name for first submission
         // Make the code readable and use helper methods as needed.
         // Add setters and getters to the game manager that the builder calls.
         gameManager.setCreatureInf(configuration.creatures());

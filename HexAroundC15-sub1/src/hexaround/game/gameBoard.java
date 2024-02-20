@@ -60,6 +60,7 @@ public class gameBoard {
                 coord.changeLoc(tox,toy);
             }
         }
+        hexBoard.add(currentSpot);
     }
 
 }
