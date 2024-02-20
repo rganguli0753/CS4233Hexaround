@@ -143,7 +143,9 @@ public class HexAroundFirstSubmission implements IHexAround1{
         return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE");
     }
 
-
+    public PlayerName getTurnNum() {
+        return turnNum;
+    }
 
     /**
      * This is never used in this submission. You do not have to do anything.
@@ -178,6 +180,7 @@ public class HexAroundFirstSubmission implements IHexAround1{
         if(creature!=getCreatureAt(fromX,fromY))
             return new MoveResponse(MoveResult.MOVE_ERROR,"INCORRECT CREATURE MOVEMENT");
 
+        changePlayerTurn();
         board.updateLocation(fromX,fromY,toX,toY);
         return new MoveResponse(MoveResult.OK);
     }
