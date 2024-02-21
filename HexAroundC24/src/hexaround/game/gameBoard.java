@@ -63,11 +63,12 @@ public class gameBoard {
         hexBoard.add(currentSpot);
     }
 
-    public boolean isDisconnected(int tox, int toy){
-        for(Hex coord: hexBoard){
-            if((tox<=coord.getX()+1&&tox>=coord.getX()-1)&&(toy<=coord.getY()+1&&toy>=coord.getY()-1)){
+    public boolean isDisconnected(int tox, int toy, gameBoard board){
+        Hex spot = new Hex(tox,toy);
+        Collection<Hex> neighbors = spot.getNeighbors();
+        for(Hex neighboring: neighbors){
+            if(board.isOccupied(neighboring.getX(), neighboring.getY()))
                 return false;
-            }
         }
         return true;
     }

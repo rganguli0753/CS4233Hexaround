@@ -187,14 +187,14 @@ public class HexAroundManager implements IHexAround1{
             return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT TOO FAR");
         }
 
-        if(board.isDisconnected(toX,toY)) {
-            changePlayerTurn();
-            return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
-        }
-
         if(creature!=getCreatureAt(fromX,fromY)) {
             changePlayerTurn();
             return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
+        }
+
+        if(board.isDisconnected(toX,toY, board)) {
+            changePlayerTurn();
+            return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
         }
 
         changePlayerTurn();

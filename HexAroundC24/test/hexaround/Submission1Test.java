@@ -83,7 +83,7 @@ public class Submission1Test {
         makeFirstMoves();
         MoveResult result = MoveResult.OK;
         String msg = null;
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, -1, 1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 3, 0);
         assertEquals(result, mr.moveResult());
         assertEquals(msg, mr.message());
     }

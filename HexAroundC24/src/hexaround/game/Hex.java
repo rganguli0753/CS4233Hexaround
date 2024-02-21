@@ -2,6 +2,9 @@ package hexaround.game;
 
 import hexaround.required.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class Hex {
     private int x,y;
     private CreatureName creature;
@@ -52,5 +55,16 @@ public class Hex {
     public void changeLoc(int tox, int toy) {
         this.x = tox;
         this.y = toy;
+    }
+
+    public Collection<Hex> getNeighbors(){
+        Collection<Hex> neighborCoords = new ArrayList<>();
+        neighborCoords.add(new Hex(x,y+1));
+        neighborCoords.add(new Hex(x+1,y));
+        neighborCoords.add(new Hex(x+1,y-1));
+        neighborCoords.add(new Hex(x,y-1));
+        neighborCoords.add(new Hex(x-1,y));
+        neighborCoords.add(new Hex(x-1,y+1));
+        return neighborCoords;
     }
 }
