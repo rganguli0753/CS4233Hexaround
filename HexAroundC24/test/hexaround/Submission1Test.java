@@ -1,7 +1,5 @@
 package hexaround;
 
-import hexaround.config.GameConfiguration;
-import hexaround.config.HexAroundConfigurationMaker;
 import hexaround.game.*;
 import hexaround.required.*;
 import org.junit.jupiter.api.*;
@@ -12,14 +10,14 @@ import static hexaround.required.CreatureName.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Submission1Test {
-    HexAroundFirstSubmission gameManager = null;
+    HexAroundManager gameManager = null;
 
 
     void build() throws IOException {
-        String hgcFile = "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc";
+        String hgcFile = "HexAroundC24/testConfigurations/FirstConfiguration.hgc";
         this.gameManager =
-                (HexAroundFirstSubmission) HexAroundGameBuilder.buildGameManager(
-                        "HexAroundC15-sub1/testConfigurations/FirstConfiguration.hgc");
+                (HexAroundManager) HexAroundGameBuilder.buildGameManager(
+                        "HexAroundC24/testConfigurations/FirstConfiguration.hgc");
     }
 
     void makeFirstMoves() throws IOException {
@@ -146,6 +144,14 @@ public class Submission1Test {
     void getPlayerTurn() throws IOException{
         makeFirstMoves();
         assertEquals(PlayerName.RED,gameManager.getTurnNum());
+    }
+
+    @Test
+    void playerChanges() throws IOException{
+        makeFirstMoves();
+        assertEquals(PlayerName.RED,gameManager.getTurnNum());
+        gameManager.moveCreature(BUTTERFLY,2,1,-1,1);
+        assertEquals(PlayerName.BLUE,gameManager.getTurnNum());
     }
 
 }

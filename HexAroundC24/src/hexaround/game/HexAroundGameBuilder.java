@@ -27,7 +27,7 @@ public class HexAroundGameBuilder {
         HexAroundConfigurationMaker configurationMaker =
             new HexAroundConfigurationMaker(configurationFile);
         GameConfiguration configuration = configurationMaker.makeConfiguration();
-        HexAroundFirstSubmission gameManager = new HexAroundFirstSubmission();   // an empty game manager
+        HexAroundManager gameManager = new HexAroundManager();   // an empty game manager
 
         // TODO: Change the name for the submission
         // Make the code readable and use helper methods as needed.
