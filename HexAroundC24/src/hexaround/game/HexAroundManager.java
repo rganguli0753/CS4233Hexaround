@@ -144,13 +144,17 @@ public class HexAroundManager implements IHexAround1{
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
-        if(playerTurn==PlayerName.BLUE&&blueTurns==4&&!blueCreatures.contains(CreatureName.BUTTERFLY)){
+        if(playerTurn==PlayerName.BLUE&&blueTurns>=4&&!blueCreatures.contains(CreatureName.BUTTERFLY)){
             return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
-        } else if (playerTurn==PlayerName.RED&&redTurns==4&&!redCreatures.contains(CreatureName.BUTTERFLY)) {
+        } else if (playerTurn==PlayerName.RED&&redTurns>=4&&!redCreatures.contains(CreatureName.BUTTERFLY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
         }
         if(numPlace==0) {
             board.placePiece(creature, new Hex(0, 0));
+            if(playerTurn==PlayerName.BLUE)
+                blueCreatures.add(creature);
+            else
+                redCreatures.add(creature);
             numPlace++;
             changePlayerTurn();
             return new MoveResponse(MoveResult.OK);
@@ -158,6 +162,11 @@ public class HexAroundManager implements IHexAround1{
         if(playerInf.get(playerTurn).creatures().containsKey(creature)){
             if(!board.isOccupied(x,y)){
                 board.placePiece(creature, spot);
+                if(playerTurn==PlayerName.BLUE)
+                    blueCreatures.add(creature);
+                else
+                    redCreatures.add(creature);
+                numPlace++;
                 changePlayerTurn();
                 return new MoveResponse(MoveResult.OK);
             }
