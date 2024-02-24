@@ -143,15 +143,15 @@ public class Submission1Test {
     @Test
     void getPlayerTurn() throws IOException{
         makeFirstMoves();
-        assertEquals(PlayerName.RED,gameManager.getTurnNum());
+        assertEquals(PlayerName.RED,gameManager.getplayerTurn());
     }
 
     @Test
     void playerChanges() throws IOException{
         makeFirstMoves();
-        assertEquals(PlayerName.RED,gameManager.getTurnNum());
+        assertEquals(PlayerName.RED,gameManager.getplayerTurn());
         gameManager.moveCreature(BUTTERFLY,2,1,-1,1);
-        assertEquals(PlayerName.BLUE,gameManager.getTurnNum());
+        assertEquals(PlayerName.BLUE,gameManager.getplayerTurn());
     }
 
 }

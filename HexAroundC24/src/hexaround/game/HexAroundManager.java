@@ -7,14 +7,20 @@ import hexaround.required.*;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.LinkedList;
 
 public class HexAroundManager implements IHexAround1{
 
     private Dictionary<CreatureName, CreatureDefinition> creatureInf = new Hashtable<>();
     private gameBoard board;
-    private PlayerName turnNum;
+    private PlayerName playerTurn;
     private Dictionary<PlayerName,PlayerConfiguration> playerInf = new Hashtable<>();
     int numPlace;
+
+    int blueTurns=1;
+    int redTurns=1;
+    LinkedList<CreatureName> blueCreatures = new LinkedList<>();
+    LinkedList<CreatureName> redCreatures = new LinkedList<>();
 
 
     /**
@@ -27,7 +33,7 @@ public class HexAroundManager implements IHexAround1{
     public HexAroundManager() {
         // Nothing to do.
         board = new gameBoard();
-        turnNum = PlayerName.BLUE;
+        playerTurn = PlayerName.BLUE;
         numPlace=0;
     }
 
@@ -47,10 +53,14 @@ public class HexAroundManager implements IHexAround1{
     }
 
     private void changePlayerTurn() {
-        if(turnNum==PlayerName.BLUE)
-            turnNum = PlayerName.RED;
-        else
-            turnNum = PlayerName.BLUE;
+        if(playerTurn==PlayerName.BLUE) {
+            blueTurns++;
+            playerTurn = PlayerName.RED;
+        }
+        else {
+            redTurns++;
+            playerTurn = PlayerName.BLUE;
+        }
     }
 
 
@@ -134,13 +144,18 @@ public class HexAroundManager implements IHexAround1{
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
+        if(playerTurn==PlayerName.BLUE&&blueTurns==4&&!blueCreatures.contains(CreatureName.BUTTERFLY)){
+            return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
+        } else if (playerTurn==PlayerName.RED&&redTurns==4&&!redCreatures.contains(CreatureName.BUTTERFLY)) {
+            return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
+        }
         if(numPlace==0) {
             board.placePiece(creature, new Hex(0, 0));
             numPlace++;
             changePlayerTurn();
             return new MoveResponse(MoveResult.OK);
         }
-        if(playerInf.get(turnNum).creatures().containsKey(creature)){
+        if(playerInf.get(playerTurn).creatures().containsKey(creature)){
             if(!board.isOccupied(x,y)){
                 board.placePiece(creature, spot);
                 changePlayerTurn();
@@ -150,8 +165,8 @@ public class HexAroundManager implements IHexAround1{
         return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE");
     }
 
-    public PlayerName getTurnNum() {
-        return turnNum;
+    public PlayerName getplayerTurn() {
+        return playerTurn;
     }
 
     /**
