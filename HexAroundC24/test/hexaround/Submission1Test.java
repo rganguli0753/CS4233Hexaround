@@ -28,6 +28,20 @@ public class Submission1Test {
 
     }
 
+    void setUp() throws IOException {
+        build();
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 0);
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 1);
+        gameManager.placeCreature(CreatureName.DOVE, 0, -1);
+        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);
+        gameManager.placeCreature(CreatureName.TURTLE, -1, -1);
+        gameManager.placeCreature(CreatureName.DOVE, 0, 2);
+        gameManager.placeCreature(CreatureName.DOVE, 0, -2);
+        gameManager.placeCreature(CreatureName.DOVE, 1, 1);
+        gameManager.placeCreature(CreatureName.TURTLE, 1, -2);
+        gameManager.placeCreature(CreatureName.TURTLE, 2, 0);
+    }
+
     @Test
     void firstTest() throws IOException {
         build();
