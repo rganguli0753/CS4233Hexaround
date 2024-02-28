@@ -175,4 +175,11 @@ public class Submission1Test {
         assertEquals(MoveResult.MOVE_ERROR,response.moveResult());
     }
 
+    @Test
+    void invalidDoveMove() throws IOException{
+        setUp();
+        MoveResponse response = gameManager.moveCreature(DOVE, 0,-1,0,3);
+        assertEquals(MoveResult.MOVE_ERROR,response.moveResult());
+    }
+
 }
