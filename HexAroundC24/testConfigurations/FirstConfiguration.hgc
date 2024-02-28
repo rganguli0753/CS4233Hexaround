@@ -3,10 +3,15 @@
 CREATURES:
 	butterfly [WALKING QUEEN]
 	GRASSHOPPER 3 [JUMPING INTRUDING]
-
+	turtle 3 [walking]
+	dove 5 [flying]
 PLAYERS:
 	RED
-		butterfly 1,
-		grasshopper 5
+	    butterfly 1,
+	    grasshopper 5,
+	    turtle 4,
+	    dove 3
 	BLUE
-	    BUTTERFLY 1
+	    BUTTERFLY 1,
+	    turtle 3,
+	    dove 4
