@@ -168,4 +168,11 @@ public class Submission1Test {
         assertEquals(PlayerName.BLUE,gameManager.getplayerTurn());
     }
 
+    @Test
+    void incorrectButterflyMove() throws IOException{
+        setUp();
+        MoveResponse response = gameManager.moveCreature(BUTTERFLY, 0,0,1,-1);
+        assertEquals(MoveResult.MOVE_ERROR,response.moveResult());
+    }
+
 }
