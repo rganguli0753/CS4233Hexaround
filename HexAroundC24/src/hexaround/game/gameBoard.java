@@ -73,4 +73,30 @@ public class gameBoard {
         return true;
     }
 
+    boolean lineararity(Hex from,Hex to){
+        int fromZ = -from.getX()- from.getY();
+        int toZ = -to.getX()- to.getY();
+        return (from.getX()==to.getY()||to.getX()==to.getY()||toZ==fromZ);
+    }
+
+    boolean flyPath(int fromX, int fromY, int toX, int toY){
+        Hex from = new Hex(fromX,fromY);
+        Hex to = new Hex(toX,toY);
+        if(from.getNeighbors().size()==6)
+            return false;
+        if(to.getNeighbors().size()==0)
+            return false;
+        return true;
+    }
+
+    //jump path must move in a straight line
+    boolean jumpPath(int fromX, int fromY, int toX, int toY){
+        Hex to = new Hex(toX,toY);
+        if(!lineararity(new Hex(fromX,fromY),new Hex(toX,toY)))
+            return false;
+        if(to.getNeighbors().size()==0)
+            return false;
+        return true;
+    }
+
 }
