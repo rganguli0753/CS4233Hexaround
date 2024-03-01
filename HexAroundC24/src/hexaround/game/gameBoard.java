@@ -64,7 +64,28 @@ public class gameBoard {
     }
 
     public boolean viablePath(CreatureDefinition def,CreatureName creature, int fromX, int fromY, int toX, int toY){
-
+        for(CreatureProperty property: def.properties()){
+            switch(property){
+                case WALKING :
+                    if(!walkPath(def.maxDistance(), fromX,fromY,toX,toY))
+                        return false;
+                    break;
+                case RUNNING:
+                    if (!runPath(def.maxDistance(),fromX,fromY,toX,toY))
+                        return false;
+                    break;
+                case JUMPING:
+                    if(!jumpPath(fromX,fromY,toX,toY))
+                        return false;
+                    break;
+                case FLYING:
+                    if (!flyPath(fromX,fromY,toX,toY))
+                        return false;
+                    break;
+                default:
+                    break;
+            }
+        }
         return true;
     }
 
@@ -101,6 +122,14 @@ public class gameBoard {
             return false;
         if(to.getNeighbors().size()==0)
             return false;
+        return true;
+    }
+
+    boolean walkPath(int dist, int fromX, int fromY, int toX, int toY){
+        return true;
+    }
+
+    boolean runPath(int dist, int fromX, int fromY, int toX, int toY){
         return true;
     }
 
