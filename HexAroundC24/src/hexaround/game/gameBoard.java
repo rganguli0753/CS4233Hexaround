@@ -73,6 +73,16 @@ public class gameBoard {
         return true;
     }
 
+    Collection<Hex> activeNeighbors(Hex coord){
+        Collection<Hex> currentNeighbors = coord.getNeighbors();
+        Collection<Hex> actives = new ArrayList<>();
+        for(Hex hex: hexBoard){
+            if(currentNeighbors.contains(hex)&&hex.getTopPiece()!=null)
+                actives.add(hex);
+        }
+        return actives;
+    }
+
     boolean lineararity(Hex from,Hex to){
         int fromZ = -from.getX()- from.getY();
         int toZ = -to.getX()- to.getY();
@@ -97,6 +107,29 @@ public class gameBoard {
         if(to.getNeighbors().size()==0)
             return false;
         return true;
+    }
+
+    public MoveResponse checkEndGame(){
+        boolean redWin = false;
+        boolean blueWin = false;
+        for(Hex coord: hexBoard){
+            if(coord.getTopPiece()!=null&&coord.getCreature().equals(CreatureName.BUTTERFLY)){
+                if(activeNeighbors(coord).size()==6){
+                    if(coord.getTopPiece().getPlayer()==PlayerName.BLUE)
+                        redWin=true;
+                    if(coord.getTopPiece().getPlayer()==PlayerName.RED)
+                        blueWin=true;
+                }
+            }
+        }
+        if(blueWin&&redWin){
+            return new MoveResponse(MoveResult.DRAW);
+        } else if (blueWin) {
+            return new MoveResponse(MoveResult.BLUE_WON);
+        } else if (redWin) {
+            return new MoveResponse(MoveResult.RED_WON);
+        }
+        return new MoveResponse(MoveResult.OK);
     }
 
 }
