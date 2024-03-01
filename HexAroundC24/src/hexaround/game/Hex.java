@@ -88,4 +88,12 @@ public class Hex {
         neighborCoords.add(new Hex(x-1,y+1));
         return neighborCoords;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hex hex = (Hex) o;
+        return x == hex.x && y == hex.y;
+    }
 }

@@ -67,9 +67,9 @@ public class Submission1Test {
         gameManager=null;
         setUp();
         assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(DOVE,0,-1,0,3).moveResult());
-//        gameManager=null;
-//        setUp();
-//        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1));
+        gameManager=null;
+        setUp();
+        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1));
     }
 
 }

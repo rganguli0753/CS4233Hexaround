@@ -140,6 +140,10 @@ public class gameBoard {
             return false;
         if(activeNeighbors(to).size()==0)
             return false;
+        if(!BFSColonyConnectivity(getHex(toX,toY))){
+            updateLocation(toX,toY,fromX,fromY);
+            return false;
+        }
         return true;
     }
 
