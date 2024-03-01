@@ -60,7 +60,7 @@ public class gameBoard {
                 coord.changeLoc(tox,toy);
             }
         }
-        hexBoard.add(currentSpot);
+        addBoard(currentSpot);
     }
 
     public boolean viablePath(CreatureDefinition def,CreatureName creature, int fromX, int fromY, int toX, int toY){
@@ -127,4 +127,13 @@ public class gameBoard {
         return new MoveResponse(MoveResult.OK);
     }
 
+    public boolean isDisconnected(int tox, int toy, gameBoard board) {
+        Hex spot = new Hex(tox,toy);
+        Collection<Hex> neighbors = spot.getNeighbors();
+        for(Hex neighboring: neighbors){
+            if(board.isOccupied(neighboring.getX(), neighboring.getY()))
+                return false;
+        }
+        return true;
+    }
 }
