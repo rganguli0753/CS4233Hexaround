@@ -9,6 +9,12 @@ public class Hex {
     private int x,y;
     private CreatureName creature;
 
+    Piece topPiece;
+
+    public Piece getTopPiece() {
+        return topPiece;
+    }
+
     public Hex(CreatureName creature, int x, int y) {
         this.x = x;
         this.y = y;
@@ -32,6 +38,20 @@ public class Hex {
         this.creature = creature;
         this.x = coord.getX();
         this.y = coord.getY();
+    }
+
+    public Hex(Piece piece, int x, int y){
+        this.x=x;
+        this.y=y;
+        addPiece(piece);
+    }
+    public void addPiece(Piece piece){
+        this.topPiece = piece;
+    }
+    public Piece removeTopPiece(){
+        Piece piece = topPiece;
+        topPiece = null;
+        return piece;
     }
 
     public void setCreature(CreatureName creature) {
