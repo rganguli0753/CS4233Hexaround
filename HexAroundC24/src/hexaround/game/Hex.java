@@ -24,6 +24,7 @@ public class Hex {
     public Hex(int x, int y) {
         this.x = x;
         this.y = y;
+        this.creature=null;
     }
 
     public int getX() {

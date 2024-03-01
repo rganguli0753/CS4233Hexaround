@@ -152,34 +152,38 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        Hex spot = new Hex(x,y);
-        if(numPlace>=4&&!hasButterfly()&&!creature.equals(CreatureName.BUTTERFLY)){
-            return new MoveResponse(MoveResult.MOVE_ERROR,"BUTTERFLY NOT PLACED");
+        Hex spot = new Hex(x, y);
+        if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+            return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
         }
-        if(numPlace==0) {
+        if (numPlace == 0) {
             board.placePiece(creature, new Hex(0, 0));
             blueCreatures.add(creature);//enforces that it's placed at 0,0
+            board.setBlues(blueCreatures);
             numPlace++;
             changePlayerTurn();//we know that the first turn is done by blue
             return new MoveResponse(MoveResult.OK);
         }
-        if(playerInf.get(playerTurn).creatures().containsKey(creature)){
-            if(!board.isOccupied(x,y)){
-                if(!board.isDisconnected(x,y,board)){
-                    board.placePiece(creature, new Hex(x,y));
-                    if(playerTurn==PlayerName.BLUE)
+        if (playerInf.get(playerTurn).creatures().containsKey(creature)) {
+            if (!board.isOccupied(x, y)) {
+                if (!board.isDisconnected(x, y, board)) {
+                    board.placePiece(creature, new Hex(x, y));
+                    if (playerTurn == PlayerName.BLUE) {
                         blueCreatures.add(creature);
-                    else {
+                        board.setBlues(blueCreatures);
+                    } else {
                         redCreatures.add(creature);
+                        board.setReds(redCreatures);
                         numPlace++;
                     }
                     changePlayerTurn();
                     return board.checkEndGame();
                 }
-                return new MoveResponse(MoveResult.MOVE_ERROR,"PLACEMENT DISCONNECTED");
+                return new MoveResponse(MoveResult.MOVE_ERROR, "PLACEMENT DISCONNECTED");
             }
+            return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT NOT AVAILABLE");
         }
-        return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE");
+        return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
     }
 
     public PlayerName getPlayerTurn() {

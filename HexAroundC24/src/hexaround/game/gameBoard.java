@@ -10,6 +10,9 @@ public class gameBoard {
 
     public gameBoard(){}//used to just make an empty in the constructor so not null
 
+    public LinkedList<CreatureName> reds = new LinkedList<>();
+    public LinkedList<CreatureName> blues = new LinkedList<>();
+
 
     public Collection<Hex> getHexBoard() {
         return hexBoard;//getter for future use although not used now
@@ -19,8 +22,9 @@ public class gameBoard {
     }
 
     public void addBoard(Hex hex){
-        hexBoard.add(hex);//not used but needed if making place without creature
+        hexBoard.add(hex);//making place without creature
     }
+
 
     public boolean isOccupied(int x, int y){
         Hex checkCoord = new Hex(x,y);
@@ -62,7 +66,15 @@ public class gameBoard {
         addBoard(currentSpot);
     }
 
-    public boolean viablePath(CreatureDefinition def,CreatureName creature, int fromX, int fromY, int toX, int toY){
+    public void setReds(LinkedList<CreatureName> reds) {
+        this.reds = reds;
+    }
+
+    public void setBlues(LinkedList<CreatureName> blues) {
+        this.blues = blues;
+    }
+
+    public boolean viablePath(CreatureDefinition def, CreatureName creature, int fromX, int fromY, int toX, int toY){
         for(CreatureProperty property: def.properties()){
             switch(property){
                 case WALKING :
@@ -113,6 +125,11 @@ public class gameBoard {
             return false;
         if(activeNeighbors(to).size()==0)
             return false;
+        updateLocation(fromX,fromY,toX,toY);
+        if(!BFSColonyConnectivity(getHex(toX,toY))){
+            updateLocation(toX,toY,fromX,fromY);
+            return false;
+        }
         return true;
     }
 
@@ -167,23 +184,28 @@ public class gameBoard {
         return true;
     }
 
-    public boolean BFSColonyConnectivity(Hex from, LinkedList<CreatureName> reds, LinkedList<CreatureName> blues){
+    public boolean BFSColonyConnectivity(Hex to){
         if((reds.size()+blues.size())==0)
             return true;
         Set<Hex> visited = new HashSet<>();
         Queue<Hex> queue = new LinkedList<>();
-        queue.offer(from);
-        visited.add(from);
+        queue.offer(to);
+        visited.add(to);
 
         while(!queue.isEmpty()){
             Hex current = queue.poll();
             for(Hex neighbor: activeNeighbors(current)){
-                if(!visited.contains(neighbor)){
+                if(!visited.contains(neighbor)&&neighbor.getCreature()!=null){
                     visited.add(neighbor);
                     queue.offer(neighbor);
                 }
             }
         }
-        return visited.size()==(reds.size()+blues.size());
+        Set<Hex> filteredVisited = new HashSet<>();
+        for(Hex curHex:visited){
+            if(curHex.getCreature()!=null)
+                filteredVisited.add(curHex);
+        }
+        return filteredVisited.size()==(reds.size()+blues.size());
     }
 }
