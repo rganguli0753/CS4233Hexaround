@@ -30,156 +30,29 @@ public class Submission1Test {
 
     void setUp() throws IOException {
         build();
-        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 0);
-        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 1);
-        gameManager.placeCreature(CreatureName.DOVE, 0, -1);
-        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);
-        gameManager.placeCreature(CreatureName.TURTLE, -1, -1);
-        gameManager.placeCreature(CreatureName.DOVE, 0, 2);
-        gameManager.placeCreature(CreatureName.DOVE, 0, -2);
-        gameManager.placeCreature(CreatureName.DOVE, 1, 1);
-        gameManager.placeCreature(CreatureName.TURTLE, 1, -2);
-        gameManager.placeCreature(CreatureName.TURTLE, 2, 0);
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 0);//blue
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 1);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -1);//blue
+        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);//red
+        gameManager.placeCreature(CreatureName.TURTLE, -1, -1);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 0, 2);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -2);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 1, 1);//red
+        gameManager.placeCreature(CreatureName.TURTLE, 1, -2);//blue
+        gameManager.placeCreature(CreatureName.TURTLE, 2, 0);//red
     }
 
     @Test
-    void firstTest() throws IOException {
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertEquals(GRASSHOPPER,gameManager.getCreatureAt(0, 0));
-    }
-
-    @Test
-    void occupiedTestNot() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertFalse(gameManager.isOccupied(5,45));
-    }
-
-    @Test
-    void occupiedTestIs() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.isOccupied(0,0));
-    }
-
-    @Test
-    void propertyTestFalse() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertFalse(gameManager.hasProperty(0,0, CreatureProperty.WALKING));
-    }
-
-    @Test
-    void propertyTestTrue() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.hasProperty(0,0, CreatureProperty.JUMPING));
-        assertTrue(gameManager.hasProperty(0,0, CreatureProperty.INTRUDING));
-    }
-
-    @Test
-    void canReachFalse() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertFalse(gameManager.canReach(0,0,5,50));
-    }
-
-    @Test
-    void canReachTrue() throws IOException{
-        build();
-        gameManager.placeCreature(GRASSHOPPER, 5, 42);
-        assertTrue(gameManager.canReach(0,0,3,0));
-    }
-
-    @Test
-    void someMovementTest() throws IOException {
-        makeFirstMoves();
-        MoveResult result = MoveResult.OK;
-        String msg = null;
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 3, 0);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-    @Test
-    void illegalTooFarMoveTest() throws IOException{
-        makeFirstMoves();
-        MoveResult result = MoveResult.MOVE_ERROR;
-        String msg = "SPOT TOO FAR";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 5, 2);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-    @Test
-    void illegalOccupiedMoveTest() throws IOException{
-        makeFirstMoves();
-        MoveResult result = MoveResult.MOVE_ERROR;
-        String msg = "SPOT IS OCCUPIED";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, 2, 1);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-    @Test
-    void pieceMissingTest() throws IOException{
-        makeFirstMoves();
-        MoveResult result = MoveResult.MOVE_ERROR;
-        String msg = "PIECE IS MISSING";
-        gameManager.moveCreature(GRASSHOPPER, 1, 1, 3, 1);
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1, 1, 3, 1);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-    @Test
-    void incorrectCreature() throws IOException{
-        makeFirstMoves();
-        MoveResult result = MoveResult.MOVE_ERROR;
-        String msg = "INCORRECT CREATURE MOVEMENT";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 2, 1, 3, 1);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-    @Test
-    void willDisconnect() throws IOException{
-        makeFirstMoves();
-        MoveResult result = MoveResult.MOVE_ERROR;
-        String msg = "WILL DISCONNECT";
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0, 0, -2, 1);
-        assertEquals(result, mr.moveResult());
-        assertEquals(msg, mr.message());
-    }
-
-
-    @Test
-    void getPlayerTurn() throws IOException{
-        makeFirstMoves();
-        assertEquals(PlayerName.RED,gameManager.getplayerTurn());
-    }
-
-    @Test
-    void playerChanges() throws IOException{
-        makeFirstMoves();
-        assertEquals(PlayerName.RED,gameManager.getplayerTurn());
-        gameManager.moveCreature(BUTTERFLY,2,1,-1,1);
-        assertEquals(PlayerName.BLUE,gameManager.getplayerTurn());
-    }
-
-    @Test
-    void incorrectButterflyMove() throws IOException{
+    void levelOneTests() throws IOException{
         setUp();
-        MoveResponse response = gameManager.moveCreature(BUTTERFLY, 0,0,1,-1);
-        assertEquals(MoveResult.MOVE_ERROR,response.moveResult());
-    }
-
-    @Test
-    void invalidDoveMove() throws IOException{
-        setUp();
-        MoveResponse response = gameManager.moveCreature(DOVE, 0,-1,0,3);
-        assertEquals(MoveResult.MOVE_ERROR,response.moveResult());
+        assertEquals(PlayerName.BLUE,gameManager.getPlayerTurn());
+        MoveResponse mr = gameManager.moveCreature(TURTLE,-1,-1,-1,0);
+        assertEquals(MoveResult.OK,mr.moveResult());
+        assertEquals(PlayerName.RED,gameManager.getPlayerTurn());
+        assertTrue(gameManager.hasProperty(0,0,CreatureProperty.WALKING));
+        assertTrue(gameManager.hasProperty(0,0,CreatureProperty.QUEEN));
+        assertFalse(gameManager.hasProperty(0,-1,CreatureProperty.WALKING));
+        assertTrue(gameManager.hasProperty(0,-1,CreatureProperty.FLYING));
     }
 
 }

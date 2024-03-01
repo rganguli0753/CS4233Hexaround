@@ -54,13 +54,22 @@ public class HexAroundManager implements IHexAround1{
 
     private void changePlayerTurn() {
         if(playerTurn==PlayerName.BLUE) {
-            blueTurns++;
             playerTurn = PlayerName.RED;
         }
         else {
-            redTurns++;
             playerTurn = PlayerName.BLUE;
         }
+    }
+
+    boolean hasButterfly(){
+        if(playerTurn.equals(PlayerName.BLUE)){
+            if(blueCreatures.contains(CreatureName.BUTTERFLY))
+                return true;
+        } else if (playerTurn.equals(PlayerName.RED)) {
+            if(redCreatures.contains(CreatureName.BUTTERFLY))
+                return true;
+        }
+        return false;
     }
 
 
@@ -144,37 +153,35 @@ public class HexAroundManager implements IHexAround1{
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         Hex spot = new Hex(x,y);
-        if(playerTurn==PlayerName.BLUE&&blueTurns>=4&&!blueCreatures.contains(CreatureName.BUTTERFLY)){
-            return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
-        } else if (playerTurn==PlayerName.RED&&redTurns>=4&&!redCreatures.contains(CreatureName.BUTTERFLY)) {
-            return new MoveResponse(MoveResult.MOVE_ERROR, "NEED TO HAVE BUTTERFLY");
+        if(numPlace>=4&&!hasButterfly()&&!creature.equals(CreatureName.BUTTERFLY)){
+            return new MoveResponse(MoveResult.MOVE_ERROR,"BUTTERFLY NOT PLACED");
         }
         if(numPlace==0) {
             board.placePiece(creature, new Hex(0, 0));
-            if(playerTurn==PlayerName.BLUE)
-                blueCreatures.add(creature);
-            else
-                redCreatures.add(creature);
+            blueCreatures.add(creature);//enforces that it's placed at 0,0
             numPlace++;
-            changePlayerTurn();
+            changePlayerTurn();//we know that the first turn is done by blue
             return new MoveResponse(MoveResult.OK);
         }
         if(playerInf.get(playerTurn).creatures().containsKey(creature)){
             if(!board.isOccupied(x,y)){
-                board.placePiece(creature, spot);
-                if(playerTurn==PlayerName.BLUE)
-                    blueCreatures.add(creature);
-                else
-                    redCreatures.add(creature);
-                numPlace++;
-                changePlayerTurn();
-                return new MoveResponse(MoveResult.OK);
+                if(!board.isDisconnected(x,y,board)){
+                    board.placePiece(creature, new Hex(x,y));
+                    if(playerTurn==PlayerName.BLUE)
+                        blueCreatures.add(creature);
+                    else
+                        redCreatures.add(creature);
+                    numPlace++;
+                    changePlayerTurn();
+                    return board.checkEndGame();
+                }
+                return new MoveResponse(MoveResult.MOVE_ERROR,"PLACEMENT DISCONNECTED");
             }
         }
         return new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE");
     }
 
-    public PlayerName getplayerTurn() {
+    public PlayerName getPlayerTurn() {
         return playerTurn;
     }
 
