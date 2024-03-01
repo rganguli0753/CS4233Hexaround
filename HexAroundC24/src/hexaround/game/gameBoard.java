@@ -1,7 +1,6 @@
 package hexaround.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 import hexaround.config.CreatureDefinition;
 import hexaround.required.*;
@@ -168,7 +167,23 @@ public class gameBoard {
         return true;
     }
 
-    public void BFSChecking(Hex move){
-        
+    public boolean BFSColonyConnectivity(Hex from, LinkedList<CreatureName> reds, LinkedList<CreatureName> blues){
+        if((reds.size()+blues.size())==0)
+            return true;
+        Set<Hex> visited = new HashSet<>();
+        Queue<Hex> queue = new LinkedList<>();
+        queue.offer(from);
+        visited.add(from);
+
+        while(!queue.isEmpty()){
+            Hex current = queue.poll();
+            for(Hex neighbor: activeNeighbors(current)){
+                if(!visited.contains(neighbor)){
+                    visited.add(neighbor);
+                    queue.offer(neighbor);
+                }
+            }
+        }
+        return visited.size()==(reds.size()+blues.size());
     }
 }
