@@ -55,4 +55,9 @@ public class Submission1Test {
         assertTrue(gameManager.hasProperty(0,-1,CreatureProperty.FLYING));
     }
 
+    @Test
+    void levelTwoTests() throws IOException{
+
+    }
+
 }

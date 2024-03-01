@@ -169,9 +169,10 @@ public class HexAroundManager implements IHexAround1{
                     board.placePiece(creature, new Hex(x,y));
                     if(playerTurn==PlayerName.BLUE)
                         blueCreatures.add(creature);
-                    else
+                    else {
                         redCreatures.add(creature);
-                    numPlace++;
+                        numPlace++;
+                    }
                     changePlayerTurn();
                     return board.checkEndGame();
                 }
@@ -196,38 +197,31 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
-        /*TODO
-        * Make sure to make invalid movement if disconnect from hive
-        * begin to implement movement properties
-         */
         if(!isOccupied(fromX,fromY)|| getCreatureAt(fromX,fromY)==null) {
-            changePlayerTurn();
             return new MoveResponse(MoveResult.MOVE_ERROR, "PIECE IS MISSING");
         }
-
-        if(isOccupied(toX,toY)) {
-            changePlayerTurn();
-            return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT IS OCCUPIED");
+        if(fromX==toX&&fromY==toY){
+            return new MoveResponse(MoveResult.MOVE_ERROR,"CANNOT MOVE TO SAME SPOT");
         }
-
+        if(isOccupied(toX,toY) &&
+                (!hasProperty(fromX,fromY,CreatureProperty.INTRUDING)||
+                !hasProperty(fromX,fromY,CreatureProperty.TRAPPING))) {
+           return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT IS OCCUPIED");
+        }
 
         int creaturedist = creatureInf.get(getCreatureAt(fromX,fromY)).maxDistance();
 
         if(!board.reachable(new Hex(fromX, fromY), new Hex(toX, toY), creaturedist)) {
-            changePlayerTurn();
             return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT TOO FAR");
         }
-
         if(creature!=getCreatureAt(fromX,fromY)) {
-            changePlayerTurn();
             return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
         }
-
         if(board.isDisconnected(toX,toY, board)) {
-            changePlayerTurn();
             return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
         }
-
+        if(playerTurn==PlayerName.RED)
+            numPlace++;
         changePlayerTurn();
         board.updateLocation(fromX,fromY,toX,toY);
         return new MoveResponse(MoveResult.OK);
