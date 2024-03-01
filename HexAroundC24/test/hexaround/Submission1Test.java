@@ -59,16 +59,28 @@ public class Submission1Test {
     }
 
     @Test
-    void levelTwoTests() throws IOException{
+    void correctDoveFly() throws IOException {
         setUp();
         MoveResponse mr = gameManager.moveCreature(DOVE,0,-2,0,3);
         assertEquals(MoveResult.OK,mr.moveResult());
-        gameManager=null;
+    }
+
+    @Test
+    void incorrectDoveMove() throws IOException{
         setUp();
         assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(DOVE,0,-1,0,3).moveResult());
-        gameManager=null;
+    }
+
+    @Test
+    void incorrectButterfly() throws IOException{
         setUp();
-        //assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1).moveResult());
+        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1).moveResult());
+    }
+
+    @Test
+    void correctRabbitJump() throws IOException{
+        setUp();
+        assertEquals(MoveResult.OK,gameManager.moveCreature(RABBIT,2,-2,2,1).moveResult());
     }
 
 }

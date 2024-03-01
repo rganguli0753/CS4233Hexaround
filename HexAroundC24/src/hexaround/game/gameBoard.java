@@ -115,7 +115,7 @@ public class gameBoard {
     boolean lineararity(Hex from,Hex to){
         int fromZ = -from.getX()- from.getY();
         int toZ = -to.getX()- to.getY();
-        return (from.getX()==to.getY()||to.getX()==to.getY()||toZ==fromZ);
+        return (from.getX()==to.getX()||from.getY()==to.getY()||toZ==fromZ);
     }
 
     boolean flyPath(int fromX, int fromY, int toX, int toY){
@@ -140,6 +140,7 @@ public class gameBoard {
             return false;
         if(activeNeighbors(to).size()==0)
             return false;
+        updateLocation(fromX,fromY,toX,toY);
         if(!BFSColonyConnectivity(getHex(toX,toY))){
             updateLocation(toX,toY,fromX,fromY);
             return false;
@@ -148,8 +149,21 @@ public class gameBoard {
     }
 
     boolean walkPath(int dist, int fromX, int fromY, int toX, int toY){
+        Hex current = getHex(fromX,fromY);
+        if(dist==0||(fromX==toX&&fromY==toY))
+            return true;
+        for(Hex nextStep: current.getNeighbors()){
+            if(nextStep.getCreature()==null){
+                updateLocation(fromX,fromY, nextStep.getX(), nextStep.getY());
+                if(BFSColonyConnectivity(new Hex(nextStep.getX(), nextStep.getY()))){
+                    if(walkPath(dist-1, nextStep.getX(), nextStep.getY(), toX,toY))
+                        return true;
+                }
+                updateLocation(nextStep.getX(), nextStep.getY(), fromX,fromY);
+            }
+        }
 
-        return true;
+        return false;
     }
 
     boolean runPath(int dist, int fromX, int fromY, int toX, int toY){
