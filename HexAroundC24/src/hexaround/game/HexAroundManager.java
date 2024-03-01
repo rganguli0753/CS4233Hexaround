@@ -217,7 +217,7 @@ public class HexAroundManager implements IHexAround1{
         if(creature!=getCreatureAt(fromX,fromY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
         }
-        if(board.isDisconnected(toX,toY, board)) {
+        if(!board.viablePath(creatureInf.get(getCreatureAt(fromX,fromY)),creature,fromX,fromY,toX,toY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
         }
         if(playerTurn==PlayerName.RED)

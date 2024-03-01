@@ -63,13 +63,8 @@ public class gameBoard {
         hexBoard.add(currentSpot);
     }
 
-    public boolean isDisconnected(int tox, int toy, gameBoard board){
-        Hex spot = new Hex(tox,toy);
-        Collection<Hex> neighbors = spot.getNeighbors();
-        for(Hex neighboring: neighbors){
-            if(board.isOccupied(neighboring.getX(), neighboring.getY()))
-                return false;
-        }
+    public boolean viablePath(CreatureDefinition def,CreatureName creature, int fromX, int fromY, int toX, int toY){
+
         return true;
     }
 
