@@ -5,13 +5,16 @@ CREATURES:
 	GRASSHOPPER 3 [JUMPING INTRUDING]
 	turtle 3 [walking]
 	dove 5 [flying]
+	rabbit 5 [jumping]
 PLAYERS:
 	RED
 	    butterfly 1,
 	    grasshopper 5,
 	    turtle 4,
-	    dove 3
+	    dove 3,
+	    rabbit 1
 	BLUE
 	    BUTTERFLY 1,
 	    turtle 3,
-	    dove 4
+	    dove 4,
+	    rabbit 1

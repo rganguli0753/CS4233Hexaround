@@ -148,6 +148,7 @@ public class gameBoard {
     }
 
     boolean walkPath(int dist, int fromX, int fromY, int toX, int toY){
+
         return true;
     }
 
