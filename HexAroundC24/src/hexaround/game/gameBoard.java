@@ -93,8 +93,10 @@ public class gameBoard {
         Collection<Hex> currentNeighbors = coord.getNeighbors();
         Collection<Hex> actives = new ArrayList<>();
         for(Hex hex: hexBoard){
-            if(currentNeighbors.contains(hex)&&hex.getTopPiece()!=null)
-                actives.add(hex);
+            for(Hex iterator: currentNeighbors){
+                if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY()))
+                    actives.add(hex);
+            }
         }
         return actives;
     }
@@ -108,9 +110,9 @@ public class gameBoard {
     boolean flyPath(int fromX, int fromY, int toX, int toY){
         Hex from = new Hex(fromX,fromY);
         Hex to = new Hex(toX,toY);
-        if(from.getNeighbors().size()==6)
+        if(activeNeighbors(from).size()==6)
             return false;
-        if(to.getNeighbors().size()==0)
+        if(activeNeighbors(to).size()==0)
             return false;
         return true;
     }
@@ -120,7 +122,7 @@ public class gameBoard {
         Hex to = new Hex(toX,toY);
         if(!lineararity(new Hex(fromX,fromY),new Hex(toX,toY)))
             return false;
-        if(to.getNeighbors().size()==0)
+        if(activeNeighbors(to).size()==0)
             return false;
         return true;
     }
@@ -164,5 +166,9 @@ public class gameBoard {
                 return false;
         }
         return true;
+    }
+
+    public void BFSChecking(Hex move){
+        
     }
 }

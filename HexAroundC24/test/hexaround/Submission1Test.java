@@ -48,6 +48,7 @@ public class Submission1Test {
         assertEquals(PlayerName.BLUE,gameManager.getPlayerTurn());
         MoveResponse mr = gameManager.moveCreature(TURTLE,-1,-1,-1,0);
         assertEquals(MoveResult.OK,mr.moveResult());
+        assertEquals(gameManager.getCreatureAt(-1,0),TURTLE);
         assertEquals(PlayerName.RED,gameManager.getPlayerTurn());
         assertTrue(gameManager.hasProperty(0,0,CreatureProperty.WALKING));
         assertTrue(gameManager.hasProperty(0,0,CreatureProperty.QUEEN));
@@ -57,7 +58,14 @@ public class Submission1Test {
 
     @Test
     void levelTwoTests() throws IOException{
-
+        setUp();
+        gameManager.moveCreature(TURTLE,-1,-1,-1,0);
+        MoveResponse mr = gameManager.moveCreature(DOVE,0,-2,0,3);
+        assertEquals(MoveResult.OK,mr.moveResult());
+        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1));
+        gameManager=null;
+        setUp();
+        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(DOVE,0,-1,0,3));
     }
 
 }
