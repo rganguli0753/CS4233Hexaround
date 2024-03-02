@@ -139,7 +139,7 @@ public class gameBoard {
         for(Hex hex: hexBoard){
             if(hex.getCreature()!=null){
                 for(Hex iterator: currentNeighbors){
-                    if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY()))
+                    if(hex.equals(iterator)&&isOccupied(hex.getX(), hex.getY()))
                         actives.add(hex);
                 }
             }
