@@ -274,6 +274,17 @@ public class Submission1Test {
     }
 
     @Test
+    void hexEquals() throws IOException{
+        Hex firstHex = new Hex(0,0);
+        Hex compare = new Hex(0,0);
+        String str = " ";
+        assertEquals(firstHex, compare);
+        assertEquals(firstHex,firstHex);
+        assertNotEquals(null, firstHex);
+        assertNotEquals(firstHex,str);
+    }
+
+    @Test
     void movementErrors() throws IOException{
         setUp();
         MoveResponse mr =gameManager.moveCreature(SPIDER,1,-1,0,0);

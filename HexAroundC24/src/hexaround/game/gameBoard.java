@@ -202,7 +202,7 @@ public class gameBoard {
     private Hex canRun(int dist,Hex hex, Set<Hex> excluded){//dist is max distance
         for(int i = hex.getX()-dist;i<hex.getX()+dist;i++){
             for(int j = hex.getY()-dist;j<hex.getY()+dist;j++){
-                if(!(i==hex.getX()+1&&j== hex.getY()+1)&&!(i== hex.getX()-1&&j==hex.getY()-1)){
+                if(!(i==hex.getX()+dist&&j== hex.getY()+dist)&&!(i== hex.getX()-dist&&j==hex.getY()-dist)){
                     boolean valid = !excluded.contains(getHex(i,j))&&!isOccupied(i,j);
                     if(valid){
                         return  getHex(i,j);
