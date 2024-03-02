@@ -10,7 +10,7 @@ public class Hex {
     private CreatureName creature;
 
 
-    PlayerName playerPiece;
+    PlayerName playerPiece;//keep track of who owns which butterfly for endgame
 
 
 
@@ -48,8 +48,12 @@ public class Hex {
 
     public void setCreatureNull(){
         this.creature=null;
-    }
+    }//sets creature null when kamikaze
 
+    /**
+     * @param otherCoord
+     * @return the distance to the other coordinate
+     */
     public int getDistance(Hex otherCoord){
         int deltaX = getX() - otherCoord.getX();
         int deltaY = getY() - otherCoord.getY();
@@ -65,6 +69,10 @@ public class Hex {
         this.y = toy;
     }
 
+    /**
+     *
+     * @return the list of neighbors, important to note that it does not check if neighbor is occupied
+     */
     public Collection<Hex> getNeighbors(){
         Collection<Hex> neighborCoords = new ArrayList<>();
         neighborCoords.add(new Hex(x,y+1));
@@ -76,6 +84,11 @@ public class Hex {
         return neighborCoords;
     }
 
+    /**
+     * overrides the equals method, because hexes are the same if they have the same coords
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
