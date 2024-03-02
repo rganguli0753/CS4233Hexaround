@@ -83,4 +83,23 @@ public class Submission1Test {
         assertEquals(MoveResult.OK,gameManager.moveCreature(RABBIT,2,-2,2,1).moveResult());
     }
 
+    @Test
+    void validTurtleWalk() throws IOException{
+        setUp();
+        assertEquals(MoveResult.OK,gameManager.moveCreature(TURTLE,1,-2,1,-1).moveResult());
+    }
+
+    @Test
+    void invalidRabbitJump() throws IOException{
+        setUp();
+        assertEquals(MoveResult.MOVE_ERROR,gameManager.moveCreature(RABBIT,2,-2,2,2).moveResult());
+        assertEquals(MoveResult.MOVE_ERROR,gameManager.moveCreature(RABBIT,2,-2,3,0).moveResult());
+    }
+
+    @Test
+    void blueVictory() throws IOException{
+        setUp();
+        assertEquals(MoveResult.BLUE_WON, gameManager.moveCreature(TURTLE,-1,-1,-1,1).moveResult());
+    }
+
 }

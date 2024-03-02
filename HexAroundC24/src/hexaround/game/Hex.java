@@ -11,15 +11,13 @@ public class Hex {
 
     Piece topPiece;
 
+    PlayerName playerPiece;
+
     public Piece getTopPiece() {
         return topPiece;
     }
 
-    public Hex(CreatureName creature, int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.creature = creature;
-    }
+
 
     public Hex(int x, int y) {
         this.x = x;
@@ -35,24 +33,28 @@ public class Hex {
         return y;
     }
 
+    public Hex (PlayerName name,CreatureName creature, Hex coord){
+        this.creature = creature;
+        this.x = coord.getX();
+        this.y = coord.getY();
+        this.playerPiece=name;
+    }
     public Hex (CreatureName creature, Hex coord){
         this.creature = creature;
         this.x = coord.getX();
         this.y = coord.getY();
     }
 
-    public Hex(Piece piece, int x, int y){
-        this.x=x;
-        this.y=y;
-        addPiece(piece);
+    public PlayerName getPlayerPiece(){
+        return this.playerPiece;
     }
+    public void setPlayerPiece(PlayerName name){
+        this.playerPiece=name;
+    }
+
+
     public void addPiece(Piece piece){
         this.topPiece = piece;
-    }
-    public Piece removeTopPiece(){
-        Piece piece = topPiece;
-        topPiece = null;
-        return piece;
     }
 
     public void setCreature(CreatureName creature) {

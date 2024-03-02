@@ -17,8 +17,12 @@ public class gameBoard {
     public Collection<Hex> getHexBoard() {
         return hexBoard;//getter for future use although not used now
     }
-    public void placePiece(CreatureName creature,Hex coord){
-        hexBoard.add(new Hex(creature,coord));//specific addition for the placing creature
+    public void placePiece(PlayerName turn,CreatureName creature,Hex coord){
+        hexBoard.add(new Hex(turn,creature,coord));//specific addition for the placing creature
+    }
+    public void placePiece(CreatureName creature,Hex coord) {
+        Hex hex = new Hex(PlayerName.BLUE,creature,coord);//used only in the cases of the first thing placed which would be a blue
+        hexBoard.add(hex);
     }
 
     public void addBoard(Hex hex){
@@ -105,7 +109,7 @@ public class gameBoard {
         Collection<Hex> actives = new ArrayList<>();
         for(Hex hex: hexBoard){
             for(Hex iterator: currentNeighbors){
-                if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY()))
+                if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY())&&hex.getCreature()!=null)
                     actives.add(hex);
             }
         }
@@ -174,11 +178,11 @@ public class gameBoard {
         boolean redWin = false;
         boolean blueWin = false;
         for(Hex coord: hexBoard){
-            if(coord.getTopPiece()!=null&&coord.getCreature().equals(CreatureName.BUTTERFLY)){
+            if(coord.getCreature()!=null&&coord.getCreature().equals(CreatureName.BUTTERFLY)){
                 if(activeNeighbors(coord).size()==6){
-                    if(coord.getTopPiece().getPlayer()==PlayerName.BLUE)
+                    if(coord.getPlayerPiece()==PlayerName.BLUE)
                         redWin=true;
-                    if(coord.getTopPiece().getPlayer()==PlayerName.RED)
+                    if(coord.getPlayerPiece()==PlayerName.RED)
                         blueWin=true;
                 }
             }

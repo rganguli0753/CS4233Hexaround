@@ -167,7 +167,7 @@ public class HexAroundManager implements IHexAround1{
         if (playerInf.get(playerTurn).creatures().containsKey(creature)) {
             if (!board.isOccupied(x, y)) {
                 if (!board.isDisconnected(x, y, board)) {
-                    board.placePiece(creature, new Hex(x, y));
+                    board.placePiece(playerTurn,creature, new Hex(x, y));
                     if (playerTurn == PlayerName.BLUE) {
                         blueCreatures.add(creature);
                         board.setBlues(blueCreatures);
@@ -228,7 +228,7 @@ public class HexAroundManager implements IHexAround1{
             numPlace++;
         changePlayerTurn();
         board.updateLocation(fromX,fromY,toX,toY);
-        return new MoveResponse(MoveResult.OK);
+        return board.checkEndGame();
     }
 }
 
