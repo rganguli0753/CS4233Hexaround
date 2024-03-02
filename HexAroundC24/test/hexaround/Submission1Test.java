@@ -148,9 +148,9 @@ public class Submission1Test {
         gameManager.placeCreature(CreatureName.DOVE, 0, 2);//red
         gameManager.placeCreature(CreatureName.DOVE, 0, -2);//blue
         gameManager.placeCreature(CreatureName.DOVE, 1, 1);//red
-        gameManager.placeCreature(HUMMINGBIRD,1,-2);
+        gameManager.placeCreature(HUMMINGBIRD,1,-1);
         gameManager.placeCreature(HUMMINGBIRD, -1,1);
-        MoveResponse mr = gameManager.moveCreature(HUMMINGBIRD,1, -2, 2,0);
+        MoveResponse mr = gameManager.moveCreature(HUMMINGBIRD,1, -1, 2,0);
         assertEquals(MoveResult.OK,mr.moveResult());
     }
 
