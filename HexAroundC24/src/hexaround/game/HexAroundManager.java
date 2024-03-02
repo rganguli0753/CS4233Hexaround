@@ -90,6 +90,10 @@ public class HexAroundManager implements IHexAround1{
         return board.getHex(x,y).getCreature();
     }
 
+    public Hex getHexAt(int x, int y){
+        return board.getHex(x,y);
+    }
+
     /**
      * Determine if the creature at the x and y-coordinates has the specified
      * property. You can assume that there will be a creature at the specified
@@ -211,10 +215,10 @@ public class HexAroundManager implements IHexAround1{
             return new MoveResponse(MoveResult.MOVE_ERROR,"CANNOT MOVE TO SAME SPOT");
         }
         if(isOccupied(toX,toY) &&
-                (!hasProperty(fromX,fromY,CreatureProperty.INTRUDING)||
-                !hasProperty(fromX,fromY,CreatureProperty.TRAPPING)||
-                        !hasProperty(fromX,fromY,CreatureProperty.KAMIKAZE)||
-                        !hasProperty(fromX,fromY,CreatureProperty.SWAPPING))) {
+                !((hasProperty(fromX,fromY,CreatureProperty.INTRUDING)||
+                hasProperty(fromX,fromY,CreatureProperty.TRAPPING)||
+                        hasProperty(fromX,fromY,CreatureProperty.KAMIKAZE)||
+                        hasProperty(fromX,fromY,CreatureProperty.SWAPPING)))) {
            return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT IS OCCUPIED");
         }
 

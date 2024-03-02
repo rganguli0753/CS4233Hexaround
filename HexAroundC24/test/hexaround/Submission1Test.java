@@ -120,10 +120,21 @@ public class Submission1Test {
 
     @Test
     void intrudingShareSpace() throws IOException{
-        setUp();
-        gameManager.placeCreature(GRASSHOPPER, 1,-1);
-        gameManager.moveCreature(TURTLE,-1,2,-1,1);
-        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1,-1,1,0);
+        build();
+        gameManager.placeCreature(GRASSHOPPER, 0,0);
+        gameManager.placeCreature(BUTTERFLY,0,1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER,0,0,0,1);
+        assertEquals(MoveResult.OK,mr.moveResult());
+    }
+
+    @Test
+    void swapCheck() throws IOException{
+        build();
+        gameManager.placeCreature(CRAB, 0, 0);
+        gameManager.placeCreature(CRAB, 0,1);
+        MoveResponse mr = gameManager.moveCreature(CRAB,0,0,0,1);
+        assertEquals(MoveResult.OK,mr.moveResult());
+        assertEquals(PlayerName.BLUE,gameManager.getHexAt(0,1).getPlayerPiece());
     }
 
 }

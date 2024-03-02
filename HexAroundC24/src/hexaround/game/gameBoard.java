@@ -79,18 +79,21 @@ public class gameBoard {
     }
 
     public boolean viablePath(CreatureDefinition def, CreatureName creature, int fromX, int fromY, int toX, int toY){
+        Stack<CreatureProperty> properties = new Stack<>();
         for(CreatureProperty property: def.properties()){
-            switch(property){
-                case WALKING :
-                    if(walkPath(fromX,fromY,toX,toY)==null){
-                        updateLocation(fromX,fromY,toX,toY);
-                        if(!BFSColonyConnectivity(new Hex(toX,toY))) {
-                            updateLocation(toX,toY,fromX,fromY);
-                            return false;
-                        }
+            properties.push(property);
+        }
+        switch(properties.pop()){
+            case WALKING :
+                if(walkPath(fromX,fromY,toX,toY)==null){
+                    updateLocation(fromX,fromY,toX,toY);
+                    if(!BFSColonyConnectivity(new Hex(toX,toY))) {
                         updateLocation(toX,toY,fromX,fromY);
+                        return false;
                     }
-                    break;
+                    updateLocation(toX,toY,fromX,fromY);
+                }
+                break;
                 case RUNNING:
                     if (runPath(def.maxDistance(),fromX,fromY,toX,toY)==null) {
                         updateLocation(fromX,fromY,toX,toY);
@@ -110,25 +113,31 @@ public class gameBoard {
                         return false;
                     break;
                 case KAMIKAZE:
-                    if(!kamikazePath(def.maxDistance(), fromX, fromY,toX,toY))
+                    if(!kamikazePath(fromX, fromY,toX,toY))
                         return false;
                     break;
                 case SWAPPING:
-                    if(!swapPath(def.maxDistance(), fromX, fromY,toX,toY))
+                    if(!swapPath(fromX, fromY,toX,toY))
                         return false;
                     break;
                 default:
                     break;
             }
-        }
+
         return true;
     }
 
-    private boolean swapPath(int maxDistance, int fromX, int fromY, int toX, int toY) {
+    private boolean swapPath(int fromX, int fromY, int toX, int toY) {
+        int placeX = toX;//placeholders for the swap
+        int placeY = toY;
+        toX = fromX;
+        fromX = placeX;
+        toY=fromY;
+        fromY=placeY;
         return true;
     }
 
-    private boolean kamikazePath(int maxDistance, int fromX, int fromY, int toX, int toY) {
+    private boolean kamikazePath(int fromX, int fromY, int toX, int toY) {
         return true;
     }
 
