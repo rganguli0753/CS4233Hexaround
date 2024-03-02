@@ -269,4 +269,32 @@ public class Submission1Test {
         assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT"),mr);
 
     }
+
+    //coverage from gameBoard()
+    @Test
+    void runFail() throws IOException{
+        build();
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 0);//blue
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 1);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -1);//blue
+        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);//red
+        gameManager.placeCreature(CreatureName.TURTLE, -1, -1);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 0, 2);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -2);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 1, 1);//red
+        gameManager.placeCreature(HUMMINGBIRD,1,-2);
+        gameManager.placeCreature(HUMMINGBIRD, -2,2);
+        MoveResponse mr = gameManager.moveCreature(HUMMINGBIRD,1,-2,2,-1);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
+    @Test
+    void swapFail() throws IOException{
+        build();
+        gameManager.placeCreature(CRAB, 0, 0);
+        gameManager.placeCreature(CRAB, 0,1);
+        MoveResponse mr = gameManager.moveCreature(CRAB,0,0,0,2);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+
+    }
 }

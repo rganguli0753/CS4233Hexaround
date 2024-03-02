@@ -14,9 +14,7 @@ public class gameBoard {
     public LinkedList<CreatureName> blues = new LinkedList<>();
 
 
-    public Collection<Hex> getHexBoard() {
-        return hexBoard;//getter for future use although not used now
-    }
+
     public void placePiece(PlayerName turn,CreatureName creature,Hex coord){
         hexBoard.add(new Hex(turn,creature,coord));//specific addition for the placing creature
     }
@@ -124,13 +122,18 @@ public class gameBoard {
     }
 
     private boolean swapPath(int fromX, int fromY, int toX, int toY) {
-        int placeX = toX;//placeholders for the swap
-        int placeY = toY;
-        toX = fromX;
-        fromX = placeX;
-        toY=fromY;
-        fromY=placeY;
-        return true;
+        for(Hex hex: hexBoard){
+            if(hex.getX()==toX&&hex.getY()==toY&&hex.getCreature()!=null){//checks to make sure only swapping with occupied
+                int placeX = toX;//placeholders for the swap
+                int placeY = toY;
+                toX = fromX;
+                fromX = placeX;
+                toY=fromY;
+                fromY=placeY;
+                return true;
+            }
+        }
+        return false;
     }
 
     Collection<Hex> activeNeighbors(Hex coord){
@@ -158,7 +161,7 @@ public class gameBoard {
         Hex to = new Hex(toX,toY);
         if(activeNeighbors(from).size()==6)
             return false;
-        if(activeNeighbors(to).size()==0)
+        if(activeNeighbors(to).isEmpty())
             return false;
         updateLocation(fromX,fromY,toX,toY);
         if(!BFSColonyConnectivity(getHex(toX,toY))){
@@ -173,7 +176,7 @@ public class gameBoard {
         Hex to = new Hex(toX,toY);
         if(!lineararity(new Hex(fromX,fromY),new Hex(toX,toY)))
             return false;
-        if(activeNeighbors(to).size()==0)
+        if(activeNeighbors(to).isEmpty())
             return false;
         updateLocation(fromX,fromY,toX,toY);
         if(!BFSColonyConnectivity(getHex(toX,toY))){
