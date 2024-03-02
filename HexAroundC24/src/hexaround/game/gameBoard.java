@@ -92,8 +92,14 @@ public class gameBoard {
                     }
                     break;
                 case RUNNING:
-                    if (!runPath(def.maxDistance(),fromX,fromY,toX,toY))
-                        return false;
+                    if (runPath(def.maxDistance(),fromX,fromY,toX,toY)==null) {
+                        updateLocation(fromX,fromY,toX,toY);
+                        if(!BFSColonyConnectivity(new Hex(toX,toY))) {
+                            updateLocation(toX,toY,fromX,fromY);
+                            return false;
+                        }
+                        updateLocation(toX,toY,fromX,fromY);
+                    }
                     break;
                 case JUMPING:
                     if(!jumpPath(fromX,fromY,toX,toY))
@@ -103,10 +109,26 @@ public class gameBoard {
                     if (!flyPath(fromX,fromY,toX,toY))
                         return false;
                     break;
+                case KAMIKAZE:
+                    if(!kamikazePath(def.maxDistance(), fromX, fromY,toX,toY))
+                        return false;
+                    break;
+                case SWAPPING:
+                    if(!swapPath(def.maxDistance(), fromX, fromY,toX,toY))
+                        return false;
+                    break;
                 default:
                     break;
             }
         }
+        return true;
+    }
+
+    private boolean swapPath(int maxDistance, int fromX, int fromY, int toX, int toY) {
+        return true;
+    }
+
+    private boolean kamikazePath(int maxDistance, int fromX, int fromY, int toX, int toY) {
         return true;
     }
 
@@ -173,7 +195,19 @@ public class gameBoard {
         }
         return null;
     }
-
+    private Hex canRun(int dist,Hex hex, Set<Hex> excluded){//dist is max distance
+        for(int i = hex.getX()-dist;i<hex.getX()+dist;i++){
+            for(int j = hex.getY()-dist;j<hex.getY()+dist;j++){
+                if(!(i==hex.getX()+1&&j== hex.getY()+1)&&!(i== hex.getX()-1&&j==hex.getY()-1)){
+                    boolean valid = !excluded.contains(getHex(i,j))&&!isOccupied(i,j);
+                    if(valid){
+                        return  getHex(i,j);
+                    }
+                }
+            }
+        }
+        return null;
+    }
     public List<Hex> walkPath(int fromX, int fromY, int toX, int toY){
         Hex start = getHex(fromX,fromY);
         Hex end = getHex(toX,toY);
@@ -216,8 +250,47 @@ public class gameBoard {
         return null;
     }
 
-    boolean runPath(int dist, int fromX, int fromY, int toX, int toY){
-        return true;
+
+    public List<Hex> runPath(int dist, int fromX, int fromY, int toX, int toY){
+        Hex start = getHex(fromX,fromY);
+        Hex end = getHex(toX,toY);
+        boolean path = false;
+        Queue<Hex> queue = new LinkedList<>();
+        Map<Hex,Hex> hexes = new HashMap<>();
+        Set<Hex> visited = new HashSet<>();
+        queue.offer(start);
+
+        while(!queue.isEmpty()){
+            Hex next = queue.peek();
+            path = (start==end) ? true : false;
+            if(path)
+                break;
+            visited.add(next);
+            Hex notPassed = canRun(dist,next, visited);
+
+            if(notPassed!=null){
+                queue.offer(notPassed);
+                visited.add(notPassed);
+                hexes.put(notPassed,next);
+                path = (notPassed.equals(end)) ? true : false;
+                if(path)
+                    break;
+
+            }else{
+                queue.poll();
+            }
+        }
+        if(path){
+            List<Hex> sPath = new ArrayList<>();
+            Hex endHex = end;
+            while(endHex!=null){
+                sPath.add(endHex);
+                endHex=hexes.get(endHex);
+            }
+            Collections.reverse(sPath);
+            return sPath;
+        }
+        return null;
     }
 
     public MoveResponse checkEndGame(){

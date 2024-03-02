@@ -201,6 +201,9 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
+        if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+            return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
+        }
         if(!isOccupied(fromX,fromY)|| getCreatureAt(fromX,fromY)==null) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "PIECE IS MISSING");
         }
@@ -209,7 +212,9 @@ public class HexAroundManager implements IHexAround1{
         }
         if(isOccupied(toX,toY) &&
                 (!hasProperty(fromX,fromY,CreatureProperty.INTRUDING)||
-                !hasProperty(fromX,fromY,CreatureProperty.TRAPPING))) {
+                !hasProperty(fromX,fromY,CreatureProperty.TRAPPING)||
+                        !hasProperty(fromX,fromY,CreatureProperty.KAMIKAZE)||
+                        !hasProperty(fromX,fromY,CreatureProperty.SWAPPING))) {
            return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT IS OCCUPIED");
         }
 
