@@ -208,4 +208,16 @@ public class Submission1Test {
         assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
     }
 
+    @Test
+    void redKamiFail() throws IOException{
+        build();
+        gameManager.placeCreature(SPIDER,0,0);
+        gameManager.placeCreature(SPIDER, 0,1);
+        gameManager.placeCreature(DOVE,1,0);
+        gameManager.placeCreature(DOVE, -1,2);
+        gameManager.placeCreature(TURTLE,0,-1);
+        MoveResponse mr =gameManager.moveCreature(SPIDER,0,1,1,0);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
 }
