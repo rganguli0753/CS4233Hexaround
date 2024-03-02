@@ -33,7 +33,7 @@ public class gameBoard {
     public boolean isOccupied(int x, int y){
         Hex checkCoord = new Hex(x,y);
         for(Hex coord: this.hexBoard)//checks if the distance between what is being checked
-            if(coord.getDistance(checkCoord)==0)
+            if(coord.getDistance(checkCoord)==0&&getHex(x,y).getCreature()!=null)
                 return true;
         return false;
     }

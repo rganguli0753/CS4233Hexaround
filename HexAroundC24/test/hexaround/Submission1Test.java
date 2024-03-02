@@ -154,4 +154,15 @@ public class Submission1Test {
         assertEquals(MoveResult.OK,mr.moveResult());
     }
 
+    @Test
+    void cantFly() throws IOException{
+        setUp();
+        gameManager.moveCreature(DOVE,0,-1,1,-1);
+        gameManager.moveCreature(TURTLE,2,0,2,-1);
+        gameManager.moveCreature(DOVE,0,-2,0,-1);
+        gameManager.moveCreature(TURTLE,-1,2,-1,1);
+        MoveResponse mr = gameManager.moveCreature(DOVE,1,-1,1,2);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
 }
