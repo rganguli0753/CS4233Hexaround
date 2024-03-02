@@ -46,10 +46,16 @@ public class gameBoard {
     }
 
     public boolean reachable(Hex from, Hex to, int maxDist){
-        int dist = from.getDistance(to);
+        int dist = from.getDistance(to);//used for the can reach in gameManager
         return maxDist>=dist;
     }
 
+    /**
+     * takes in the list of properties of one creature and determines if a desired property is among them
+     * @param def
+     * @param prop
+     * @return
+     */
     public boolean propertyExist(CreatureDefinition def, CreatureProperty prop){
         for(CreatureProperty p: def.properties()){
             if(p.toString().equals(prop.toString()))
@@ -58,6 +64,13 @@ public class gameBoard {
         return false;
     }
 
+    /**
+     * updates the location attributes of the hex and leaves behind a new hex with a null creature
+     * @param fromx
+     * @param fromy
+     * @param tox
+     * @param toy
+     */
     public void updateLocation(int fromx, int fromy, int tox, int toy){
         Hex currentSpot = new Hex(fromx,fromy);
         for(Hex coord: hexBoard){
@@ -69,23 +82,33 @@ public class gameBoard {
     }
 
     public void setReds(LinkedList<CreatureName> reds) {
-        this.reds = reds;
+        this.reds = reds;//the list of red creatures currently on the board
     }
 
     public void setBlues(LinkedList<CreatureName> blues) {
-        this.blues = blues;
+        this.blues = blues;//the list of blue creatures currently on the board
     }
 
+    /**
+     *
+     * @param def used to get list of properties
+     * @param creature
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return if a path can be made based on deterministic movement properties
+     */
     public boolean viablePath(CreatureDefinition def, CreatureName creature, int fromX, int fromY, int toX, int toY){
         Stack<CreatureProperty> properties = new Stack<>();
         for(CreatureProperty property: def.properties()){
-            properties.push(property);
+            properties.push(property);//make a stack so you can configure the order
         }
         switch(properties.pop()){
             case WALKING :
                 if(walkPath(fromX,fromY,toX,toY)==null){
                     updateLocation(fromX,fromY,toX,toY);
-                    if(!BFSColonyConnectivity(new Hex(toX,toY))) {
+                    if(!BFSColonyConnectivity(new Hex(toX,toY))) {//is end result connected?
                         updateLocation(toX,toY,fromX,fromY);
                         return false;
                     }
@@ -136,6 +159,11 @@ public class gameBoard {
         return false;
     }
 
+    /**
+     * lower the list of neighbors for a specific coordinate to only the occupied ones
+     * @param coord
+     * @return
+     */
     Collection<Hex> activeNeighbors(Hex coord){
         Collection<Hex> currentNeighbors = coord.getNeighbors();
         Collection<Hex> actives = new ArrayList<>();
@@ -150,6 +178,12 @@ public class gameBoard {
         return actives;
     }
 
+    /**
+     * checks if a jump path is linear
+     * @param from
+     * @param to
+     * @return
+     */
     boolean lineararity(Hex from,Hex to){
         int fromZ = -from.getX()- from.getY();
         int toZ = -to.getX()- to.getY();
@@ -159,19 +193,20 @@ public class gameBoard {
     boolean flyPath(int fromX, int fromY, int toX, int toY){
         Hex from = new Hex(fromX,fromY);
         Hex to = new Hex(toX,toY);
-        if(activeNeighbors(from).size()==6)
+        if(activeNeighbors(from).size()==6)//cannot take off if surrounded
             return false;
-        if(activeNeighbors(to).isEmpty())
+        if(activeNeighbors(to).isEmpty())//cannot move to where no neighbors
             return false;
-        updateLocation(fromX,fromY,toX,toY);
-        if(!BFSColonyConnectivity(getHex(toX,toY))){
-            updateLocation(toX,toY,fromX,fromY);
+        updateLocation(fromX,fromY,toX,toY);//temporarily change to simulate what board is if changed
+        if(!BFSColonyConnectivity(getHex(toX,toY))){//determine if change breaks connectivity
+            updateLocation(toX,toY,fromX,fromY);//change back
             return false;
         }
+        updateLocation(toX,toY,fromX,fromY);
         return true;
     }
 
-    //jump path must move in a straight line
+    //jump path must move in a straight line, same logic as fly for movement
     boolean jumpPath(int fromX, int fromY, int toX, int toY){
         Hex to = new Hex(toX,toY);
         if(!lineararity(new Hex(fromX,fromY),new Hex(toX,toY)))
@@ -183,9 +218,16 @@ public class gameBoard {
             updateLocation(toX,toY,fromX,fromY);
             return false;
         }
+        updateLocation(toX,toY,fromX,fromY);
         return true;
     }
 
+    /**
+     * determine if can move by index of one and is still connected to the ongoing path
+     * @param hex
+     * @param excluded
+     * @return
+     */
     private Hex canWalk(Hex hex, Set<Hex> excluded){
         for(int i = hex.getX()-1;i<hex.getX()+1;i++){
             for(int j = hex.getY()-1;j<hex.getY()+1;j++){
@@ -199,6 +241,7 @@ public class gameBoard {
         }
         return null;
     }
+    //similar logic to walk, but always goes by max distance
     private Hex canRun(int dist,Hex hex, Set<Hex> excluded){//dist is max distance
         for(int i = hex.getX()-dist;i<hex.getX()+dist;i++){
             for(int j = hex.getY()-dist;j<hex.getY()+dist;j++){
@@ -212,6 +255,15 @@ public class gameBoard {
         }
         return null;
     }
+
+    /**
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return list of all hexes in the path, if its null then theres no available path to traverse
+     */
     public List<Hex> walkPath(int fromX, int fromY, int toX, int toY){
         Hex start = getHex(fromX,fromY);
         Hex end = getHex(toX,toY);
@@ -242,7 +294,7 @@ public class gameBoard {
             }
         }
         if(path){
-            List<Hex> sPath = new ArrayList<>();
+            List<Hex> sPath = new ArrayList<>();//from the possible visited hexes, develop the shortest path
             Hex endHex = end;
             while(endHex!=null){
                 sPath.add(endHex);
@@ -255,7 +307,7 @@ public class gameBoard {
     }
 
 
-    public List<Hex> runPath(int dist, int fromX, int fromY, int toX, int toY){
+    public List<Hex> runPath(int dist, int fromX, int fromY, int toX, int toY){//similar logic to the walk path, but using run criteria
         Hex start = getHex(fromX,fromY);
         Hex end = getHex(toX,toY);
         boolean path = false;
@@ -304,13 +356,13 @@ public class gameBoard {
             if(coord.getCreature()!=null&&coord.getCreature().equals(CreatureName.BUTTERFLY)){
                 if(activeNeighbors(coord).size()==6){
                     if(coord.getPlayerPiece()==PlayerName.BLUE)
-                        redWin=true;
+                        redWin=true;//because the blue butterfly has 6 active neighbors
                     if(coord.getPlayerPiece()==PlayerName.RED)
                         blueWin=true;
                 }
             }
         }
-        if(blueWin&&redWin){
+        if(blueWin&&redWin){//note that if they draw
             return new MoveResponse(MoveResult.DRAW);
         } else if (blueWin) {
             return new MoveResponse(MoveResult.BLUE_WON);
@@ -320,6 +372,13 @@ public class gameBoard {
         return new MoveResponse(MoveResult.OK);
     }
 
+    /**
+     *
+     * @param tox
+     * @param toy
+     * @param board
+     * @return if the placement of the new piece does disconnect the board
+     */
     public boolean isDisconnected(int tox, int toy, gameBoard board) {
         Hex spot = new Hex(tox,toy);
         Collection<Hex> neighbors = spot.getNeighbors();
@@ -330,6 +389,11 @@ public class gameBoard {
         return true;
     }
 
+    /**
+     * does BFS so that one spot can find a path to every possible hex
+     * @param to
+     * @return
+     */
     public boolean BFSColonyConnectivity(Hex to){
         if((reds.size()+blues.size())==0||(reds.size()+blues.size())==1)//either theres no pieces or one piece which is connected
             return true;
@@ -353,7 +417,7 @@ public class gameBoard {
         Set<Hex> filteredVisited = new HashSet<>();
         for(Hex curHex:visited){
             if(curHex.getCreature()!=null)
-                filteredVisited.add(curHex);
+                filteredVisited.add(curHex);//filter out any hexes that may have been added if the creature was null
         }
         return filteredVisited.size()==(reds.size()+blues.size());
     }
