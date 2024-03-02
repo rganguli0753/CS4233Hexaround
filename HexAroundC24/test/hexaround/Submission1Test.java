@@ -22,9 +22,8 @@ public class Submission1Test {
 
     void makeFirstMoves() throws IOException {
         build();
-        gameManager.placeCreature(GRASSHOPPER,1,1);
-        gameManager.placeCreature(BUTTERFLY,2,1);
-        gameManager.placeCreature(BUTTERFLY,5,1);
+        gameManager.placeCreature(GRASSHOPPER,0,0);
+        gameManager.placeCreature(BUTTERFLY,1,0);
 
     }
 
@@ -213,8 +212,8 @@ public class Submission1Test {
         build();
         gameManager.placeCreature(SPIDER,0,0);
         gameManager.placeCreature(SPIDER, 0,1);
-        gameManager.placeCreature(DOVE,1,0);
-        gameManager.placeCreature(DOVE, -1,2);
+        gameManager.placeCreature(BUTTERFLY,1,0);
+        gameManager.placeCreature(BUTTERFLY, -1,2);
         gameManager.placeCreature(TURTLE,0,-1);
         MoveResponse mr =gameManager.moveCreature(SPIDER,0,1,1,0);
         assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
@@ -235,5 +234,39 @@ public class Submission1Test {
         MoveResponse mr = gameManager.placeCreature(GRASSHOPPER, 1, -1);
         assertEquals(MoveResult.DRAW,mr.moveResult());
     }
+//Misc tests to fill out branch coverage
+    @Test
+    void canReachTest() throws IOException{
+        build();
+        gameManager.placeCreature(BUTTERFLY, 0, 0);
+        gameManager.canReach(0,0,1,0);
+        assertTrue(gameManager.canReach(0,0,1,0));
+    }
 
+    @Test
+    void placeErrors() throws IOException{
+        makeFirstMoves();
+        MoveResponse mr = gameManager.placeCreature(BUTTERFLY, 5,5);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR,"PLACEMENT DISCONNECTED"),mr);
+        mr = gameManager.placeCreature(BUTTERFLY, 0,0);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR,"SPOT NOT AVAILABLE"),mr);
+        mr = gameManager.placeCreature(HORSE, 0,-1);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR,"CREATURE DNE"),mr);
+    }
+
+    @Test
+    void movementErrors() throws IOException{
+        setUp();
+        MoveResponse mr =gameManager.moveCreature(SPIDER,1,-1,0,0);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "PIECE IS MISSING"),mr);
+        mr =gameManager.moveCreature(BUTTERFLY,0,0,0,0);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "CANNOT MOVE TO SAME SPOT"),mr);
+        mr =gameManager.moveCreature(DOVE,0,-2,-1,-1);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "SPOT IS OCCUPIED"),mr);
+        mr =gameManager.moveCreature(DOVE,0,-2,0,5);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "SPOT TOO FAR"),mr);
+        mr =gameManager.moveCreature(BUTTERFLY,0,-2,-1,-1);
+        assertEquals(new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT"),mr);
+
+    }
 }

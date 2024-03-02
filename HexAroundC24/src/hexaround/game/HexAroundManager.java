@@ -231,6 +231,9 @@ public class HexAroundManager implements IHexAround1{
         if(fromX==toX&&fromY==toY){
             return new MoveResponse(MoveResult.MOVE_ERROR,"CANNOT MOVE TO SAME SPOT");
         }
+        if(creature!=getCreatureAt(fromX,fromY)) {
+            return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
+        }
         if(isOccupied(toX,toY) &&
                 !((hasProperty(fromX,fromY,CreatureProperty.INTRUDING)||
                 hasProperty(fromX,fromY,CreatureProperty.TRAPPING)||
@@ -244,9 +247,7 @@ public class HexAroundManager implements IHexAround1{
         if(!board.reachable(new Hex(fromX, fromY), new Hex(toX, toY), creaturedist)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT TOO FAR");
         }
-        if(creature!=getCreatureAt(fromX,fromY)) {
-            return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
-        }
+
         if(hasProperty(fromX,fromY,CreatureProperty.KAMIKAZE)) {
             if(kamikazePath(fromX,fromY,toX,toY)){
                 if(playerTurn==PlayerName.RED)
