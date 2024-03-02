@@ -201,7 +201,7 @@ public class Submission1Test {
         build();
         gameManager.placeCreature(SPIDER,0,0);
         gameManager.placeCreature(SPIDER, 0,1);
-        gameManager.placeCreature(DOVE,1,0);
+        gameManager.placeCreature(BUTTERFLY,1,0);
         gameManager.placeCreature(DOVE, -1,2);
         MoveResponse mr =gameManager.moveCreature(SPIDER,0,0,0,1);
         assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
@@ -235,6 +235,25 @@ public class Submission1Test {
         assertEquals(MoveResult.DRAW,mr.moveResult());
     }
 //Misc tests to fill out branch coverage
+    @Test
+    void amountCreatures() throws IOException{
+        build();
+        gameManager.placeCreature(BUTTERFLY, 0, 0);
+        gameManager.placeCreature(BUTTERFLY,1,0);
+        assertEquals(1,gameManager.getAmount(BUTTERFLY));
+    }
+    @Test
+    void moveWithoutButterfly() throws IOException{
+        build();
+        gameManager.placeCreature(GRASSHOPPER, 0, 0);
+        gameManager.placeCreature(BUTTERFLY, 1, 0);
+        gameManager.placeCreature(GRASSHOPPER, 1, 1);
+        gameManager.placeCreature(GRASSHOPPER, 0, -1);
+        gameManager.placeCreature(GRASSHOPPER, 0, -1);
+        gameManager.placeCreature(GRASSHOPPER, 2, 0);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 0,0,-1,1);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
     @Test
     void canReachTest() throws IOException{
         build();

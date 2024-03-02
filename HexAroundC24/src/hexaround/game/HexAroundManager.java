@@ -73,9 +73,7 @@ public class HexAroundManager implements IHexAround1{
     }
 
 
-    public gameBoard getBoard() {
-        return board;
-    }
+
 
     /**
      * Given the x and y-coordinates for a hex, return the name
@@ -189,13 +187,16 @@ public class HexAroundManager implements IHexAround1{
                 }
                 return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT NOT AVAILABLE");
             }
-            return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
         }
         return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
     }
 
+    public int getAmount(CreatureName creature){
+        return playerInf.get(playerTurn).creatures().get(creature);//made for purpose of testing
+    }
+
     void removeFromHand(CreatureName creature,int amount){
-        if(amount<1){
+        if(amount<=1){
             playerInf.get(playerTurn).creatures().remove(creature,amount);
         }else {
             playerInf.get(playerTurn).creatures().replace(creature, amount, amount - 1);
@@ -222,7 +223,7 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
-        if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+        if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
         }
         if(!isOccupied(fromX,fromY)|| getCreatureAt(fromX,fromY)==null) {
