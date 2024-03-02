@@ -72,12 +72,6 @@ public class Submission1Test {
     }
 
     @Test
-    void incorrectButterfly() throws IOException{
-        setUp();
-        assertEquals(MoveResult.MOVE_ERROR, gameManager.moveCreature(BUTTERFLY,0,0,1,-1).moveResult());
-    }
-
-    @Test
     void correctRabbitJump() throws IOException{
         setUp();
         assertEquals(MoveResult.OK,gameManager.moveCreature(RABBIT,2,-2,2,1).moveResult());
@@ -114,6 +108,22 @@ public class Submission1Test {
         gameManager.moveCreature(RABBIT, 2,-2,1,-1);
         gameManager.moveCreature(TURTLE,-1,2,-1,1);
         assertEquals(MoveResult.RED_WON, gameManager.moveCreature(TURTLE,-1,-1,-1,0).moveResult());
+    }
+
+    @Test
+    void disconnectPlacement() throws IOException{
+        build();
+        gameManager.placeCreature(BUTTERFLY, 0,0);
+        MoveResponse mr = gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 2);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
+    @Test
+    void intrudingShareSpace() throws IOException{
+        setUp();
+        gameManager.placeCreature(GRASSHOPPER, 1,-1);
+        gameManager.moveCreature(TURTLE,-1,2,-1,1);
+        MoveResponse mr = gameManager.moveCreature(GRASSHOPPER, 1,-1,1,0);
     }
 
 }
