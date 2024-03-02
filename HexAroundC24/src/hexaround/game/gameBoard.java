@@ -1,6 +1,7 @@
 package hexaround.game;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import hexaround.config.CreatureDefinition;
 import hexaround.required.*;
@@ -82,8 +83,14 @@ public class gameBoard {
         for(CreatureProperty property: def.properties()){
             switch(property){
                 case WALKING :
-                    if(!walkPath(def.maxDistance(), fromX,fromY,toX,toY))
-                        return false;
+                    if(walkPath(fromX,fromY,toX,toY)==null){
+                        updateLocation(fromX,fromY,toX,toY);
+                        if(!BFSColonyConnectivity(new Hex(toX,toY))) {
+                            updateLocation(toX,toY,fromX,fromY);
+                            return false;
+                        }
+                        updateLocation(toX,toY,fromX,fromY);
+                    }
                     break;
                 case RUNNING:
                     if (!runPath(def.maxDistance(),fromX,fromY,toX,toY))
@@ -108,9 +115,11 @@ public class gameBoard {
         Collection<Hex> currentNeighbors = coord.getNeighbors();
         Collection<Hex> actives = new ArrayList<>();
         for(Hex hex: hexBoard){
-            for(Hex iterator: currentNeighbors){
-                if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY())&&hex.getCreature()!=null)
-                    actives.add(hex);
+            if(hex.getCreature()!=null){
+                for(Hex iterator: currentNeighbors){
+                    if(hex.getX()== iterator.getX()&&hex.getY()== iterator.getY()&&isOccupied(hex.getX(), hex.getY()))
+                        actives.add(hex);
+                }
             }
         }
         return actives;
@@ -152,22 +161,60 @@ public class gameBoard {
         return true;
     }
 
-    boolean walkPath(int dist, int fromX, int fromY, int toX, int toY){
-        Hex current = getHex(fromX,fromY);
-        if(dist==0||(fromX==toX&&fromY==toY))
-            return true;
-        for(Hex nextStep: current.getNeighbors()){
-            if(nextStep.getCreature()==null){
-                updateLocation(fromX,fromY, nextStep.getX(), nextStep.getY());
-                if(BFSColonyConnectivity(new Hex(nextStep.getX(), nextStep.getY()))){
-                    if(walkPath(dist-1, nextStep.getX(), nextStep.getY(), toX,toY))
-                        return true;
+    private Hex canWalk(Hex hex, Set<Hex> excluded){
+        for(int i = hex.getX()-1;i<hex.getX()+1;i++){
+            for(int j = hex.getY()-1;j<hex.getY()+1;j++){
+                if(!(i==hex.getX()+1&&j== hex.getY()+1)&&!(i== hex.getX()-1&&j==hex.getY()-1)){
+                    boolean valid = !excluded.contains(getHex(i,j))&&!isOccupied(i,j);
+                    if(valid){
+                        return  getHex(i,j);
+                    }
                 }
-                updateLocation(nextStep.getX(), nextStep.getY(), fromX,fromY);
             }
         }
+        return null;
+    }
 
-        return false;
+    public List<Hex> walkPath(int fromX, int fromY, int toX, int toY){
+        Hex start = getHex(fromX,fromY);
+        Hex end = getHex(toX,toY);
+        boolean path = false;
+        Queue<Hex> queue = new LinkedList<>();
+        Map<Hex,Hex> hexes = new HashMap<>();
+        Set<Hex> visited = new HashSet<>();
+        queue.offer(start);
+
+        while(!queue.isEmpty()){
+            Hex next = queue.peek();
+            path = (start==end) ? true : false;
+            if(path)
+                break;
+            visited.add(next);
+            Hex notPassed = canWalk(next, visited);
+
+            if(notPassed!=null){
+                queue.offer(notPassed);
+                visited.add(notPassed);
+                hexes.put(notPassed,next);
+                path = (notPassed.equals(end)) ? true : false;
+                if(path)
+                    break;
+
+            }else{
+                queue.poll();
+            }
+        }
+        if(path){
+            List<Hex> sPath = new ArrayList<>();
+            Hex endHex = end;
+            while(endHex!=null){
+                sPath.add(endHex);
+                endHex=hexes.get(endHex);
+            }
+            Collections.reverse(sPath);
+            return sPath;
+        }
+        return null;
     }
 
     boolean runPath(int dist, int fromX, int fromY, int toX, int toY){

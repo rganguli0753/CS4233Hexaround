@@ -9,13 +9,10 @@ public class Hex {
     private int x,y;
     private CreatureName creature;
 
-    Piece topPiece;
 
     PlayerName playerPiece;
 
-    public Piece getTopPiece() {
-        return topPiece;
-    }
+
 
 
 
@@ -53,9 +50,7 @@ public class Hex {
     }
 
 
-    public void addPiece(Piece piece){
-        this.topPiece = piece;
-    }
+
 
     public void setCreature(CreatureName creature) {
         this.creature = creature;
