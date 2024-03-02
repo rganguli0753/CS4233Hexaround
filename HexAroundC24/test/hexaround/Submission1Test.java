@@ -181,7 +181,31 @@ public class Submission1Test {
     @Test
     void kamikazeSuccessTest() throws IOException{
         build();
+        gameManager.placeCreature(SPIDER,0,0);
+        gameManager.placeCreature(SPIDER, 0,1);
+        MoveResponse mr =gameManager.moveCreature(SPIDER,0,0,0,1);
+        assertEquals(MoveResult.OK,mr.moveResult());
+    }
 
+    @Test
+    void kamikazeOneCreatureLeft() throws IOException{
+        build();
+        gameManager.placeCreature(SPIDER,0,0);
+        gameManager.placeCreature(SPIDER, 0,1);
+        gameManager.placeCreature(DOVE,1,0);
+        MoveResponse mr =gameManager.moveCreature(SPIDER,0,1,1,0);
+        assertEquals(MoveResult.OK,mr.moveResult());
+    }
+
+    @Test
+    void kamikazeFail() throws IOException{
+        build();
+        gameManager.placeCreature(SPIDER,0,0);
+        gameManager.placeCreature(SPIDER, 0,1);
+        gameManager.placeCreature(DOVE,1,0);
+        gameManager.placeCreature(DOVE, -1,2);
+        MoveResponse mr =gameManager.moveCreature(SPIDER,0,0,0,1);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
     }
 
 }

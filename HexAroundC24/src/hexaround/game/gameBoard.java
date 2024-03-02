@@ -328,10 +328,13 @@ public class gameBoard {
     }
 
     public boolean BFSColonyConnectivity(Hex to){
-        if((reds.size()+blues.size())==0)
+        if((reds.size()+blues.size())==0||(reds.size()+blues.size())==1)//either theres no pieces or one piece which is connected
             return true;
         Set<Hex> visited = new HashSet<>();
         Queue<Hex> queue = new LinkedList<>();
+        if(to.getCreature()==null){
+            to=hexBoard.iterator().next();//will grab the first available space to check connectivity using bfs
+        }
         queue.offer(to);
         visited.add(to);
 

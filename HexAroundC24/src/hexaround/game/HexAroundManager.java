@@ -275,21 +275,37 @@ public class HexAroundManager implements IHexAround1{
         CreatureName toCreature = to.getCreature();//made for place holding
         from.setCreatureNull();
         to.setCreatureNull();
-        if(board.BFSColonyConnectivity(to)){//checks if still connected after both got removed from board
-            returnToHand(toCreature);//if you werent the one doing kamikaze it should return to hand
-            if(playerTurn==PlayerName.BLUE){
-                blueCreatures.remove(fromCreature);//remove from board and hand
-                board.setBlues(blueCreatures);
-                redCreatures.remove(toCreature);//just remove from board
-                board.setReds(redCreatures);
+
+        if(playerTurn==PlayerName.BLUE){
+            blueCreatures.remove(fromCreature);//remove from board and hand
+            board.setBlues(blueCreatures);
+            redCreatures.remove(toCreature);//just remove from board
+            board.setReds(redCreatures);
+            if(board.BFSColonyConnectivity(to)) {
+                returnToHand(toCreature);
+                return true;
             }else{
-                blueCreatures.remove(toCreature);
+                blueCreatures.add(fromCreature);
+                redCreatures.add(toCreature);
                 board.setBlues(blueCreatures);
-                redCreatures.remove(fromCreature);
                 board.setReds(redCreatures);
             }
-            return true;
+        }else{
+            blueCreatures.remove(toCreature);
+            board.setBlues(blueCreatures);
+            redCreatures.remove(fromCreature);
+            board.setReds(redCreatures);
+            if(board.BFSColonyConnectivity(to)) {
+                returnToHand(toCreature);
+                return true;
+            }else{
+                blueCreatures.add(toCreature);
+                redCreatures.add(fromCreature);
+                board.setBlues(blueCreatures);
+                board.setReds(redCreatures);
+            }
         }
+
        return false;
     }
 }
