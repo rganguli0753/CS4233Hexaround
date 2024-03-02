@@ -1,12 +1,12 @@
 package hexaround;
 
 import hexaround.game.*;
-import hexaround.required.*;
+import hexaround.structures.*;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
 
-import static hexaround.required.CreatureName.*;
+import static hexaround.structures.CreatureName.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Submission1Test {

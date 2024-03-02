@@ -18,7 +18,7 @@
 
 package hexaround.config;
 
-import hexaround.required.*;
+import hexaround.structures.*;
 
 import java.util.*;
 

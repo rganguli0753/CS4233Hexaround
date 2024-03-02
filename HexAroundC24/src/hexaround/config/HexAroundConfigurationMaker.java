@@ -16,7 +16,7 @@
 package hexaround.config;
 
 
-import hexaround.required.*;
+import hexaround.structures.*;
 import org.antlr.v4.runtime.*;
 
 import hexaround.config.HexAroundParser.*;
@@ -25,9 +25,9 @@ import org.antlr.v4.runtime.tree.*;
 import java.io.*;
 import java.util.*;
 
-import static hexaround.required.CreatureProperty.*;
-import static hexaround.required.PlayerName.*;
-import static hexaround.required.CreatureName.*;
+import static hexaround.structures.CreatureProperty.*;
+import static hexaround.structures.PlayerName.*;
+import static hexaround.structures.CreatureName.*;
 
 public class HexAroundConfigurationMaker extends HexAroundBaseVisitor<Void> {
     private GameConfiguration gameConfiguration;

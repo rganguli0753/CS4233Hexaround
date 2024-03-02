@@ -1,10 +1,9 @@
 package hexaround.game;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import hexaround.config.CreatureDefinition;
-import hexaround.required.*;
+import hexaround.structures.*;
 
 public class gameBoard {
     private Collection<Hex> hexBoard = new ArrayList<>();

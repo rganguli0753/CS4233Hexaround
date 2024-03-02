@@ -1,6 +1,6 @@
 package hexaround.game;
 
-import hexaround.required.*;
+import hexaround.structures.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

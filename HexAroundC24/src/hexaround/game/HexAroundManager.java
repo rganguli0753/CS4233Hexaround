@@ -2,7 +2,7 @@ package hexaround.game;
 
 import hexaround.config.CreatureDefinition;
 import hexaround.config.PlayerConfiguration;
-import hexaround.required.*;
+import hexaround.structures.*;
 
 import java.util.Collection;
 import java.util.Dictionary;
