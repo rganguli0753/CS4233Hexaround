@@ -16,9 +16,6 @@ public class HexAroundManager implements IHexAround1{
     private PlayerName playerTurn;
     private Dictionary<PlayerName,PlayerConfiguration> playerInf = new Hashtable<>();
     int numPlace;
-
-    int blueTurns=1;
-    int redTurns=1;
     LinkedList<CreatureName> blueCreatures = new LinkedList<>();
     LinkedList<CreatureName> redCreatures = new LinkedList<>();
 
@@ -37,21 +34,28 @@ public class HexAroundManager implements IHexAround1{
         numPlace=0;
     }
 
-    public Dictionary<CreatureName, CreatureDefinition> getCreatureInf() {
-        return creatureInf;
-    }
-
+    /**
+     * put the creature definitions in the manager so they can be passed to methods
+     * @param defs creature definitions from the config file
+     */
     public void setCreatureInf(Collection<CreatureDefinition> defs) {
        for(CreatureDefinition def: defs){
            creatureInf.put(def.name(),def);
        }
     }
 
+    /**
+     * configurations of the player so that they can be passed
+     * @param players the player configurations from the file
+     */
     public void setPlayerInfo(Collection<PlayerConfiguration> players){
         for(PlayerConfiguration player: players)
             playerInf.put(player.Player(),player);
     }
 
+    /**
+     * changes player turn and is called after red moves
+     */
     private void changePlayerTurn() {
         if(playerTurn==PlayerName.BLUE) {
             playerTurn = PlayerName.RED;
@@ -61,6 +65,9 @@ public class HexAroundManager implements IHexAround1{
         }
     }
 
+    /**
+     * @return true false depending on if the player has a butterfly on the board
+     */
     boolean hasButterfly(){
         if(playerTurn.equals(PlayerName.BLUE)){
             if(blueCreatures.contains(CreatureName.BUTTERFLY))
@@ -154,9 +161,9 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        if(playerInf.get(playerTurn).creatures().containsKey(creature)){
+        if(playerInf.get(playerTurn).creatures().containsKey(creature)){//make sure that the player has a copy in their hand
             int amount = playerInf.get(playerTurn).creatures().get(creature);
-            if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+            if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {//ensures by 4th turn it must be placed
                 return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
             }
             if (numPlace == 0) {
@@ -167,8 +174,8 @@ public class HexAroundManager implements IHexAround1{
                 changePlayerTurn();//we know that the first turn is done by blue
                 return new MoveResponse(MoveResult.OK);
             }
-            if (playerInf.get(playerTurn).creatures().containsKey(creature)) {
-                if (!board.isOccupied(x, y)) {
+            if (playerInf.get(playerTurn).creatures().containsKey(creature)) {//for other turns
+                if (!board.isOccupied(x, y)) {//ensures that it is a proper placement area
                     if (!board.isDisconnected(x, y, board)) {
                         board.placePiece(playerTurn,creature, new Hex(x, y));
                         if (playerTurn == PlayerName.BLUE) {
@@ -181,7 +188,7 @@ public class HexAroundManager implements IHexAround1{
                         }
                         removeFromHand(creature,amount);
                         changePlayerTurn();
-                        return board.checkEndGame();
+                        return board.checkEndGame();//check if the placement causes game to end
                     }
                     return new MoveResponse(MoveResult.MOVE_ERROR, "PLACEMENT DISCONNECTED");
                 }
@@ -191,10 +198,19 @@ public class HexAroundManager implements IHexAround1{
         return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
     }
 
+    /**
+     * @param creature the creature being checked
+     * @return int amount of that creature left in hand
+     */
     public int getAmount(CreatureName creature){
         return playerInf.get(playerTurn).creatures().get(creature);//made for purpose of testing
     }
 
+    /**
+     * if none of the creature are left, remove that creature from inventory, if else decrease the amount present
+     * @param creature the creature being accounted
+     * @param amount amount of left
+     */
     void removeFromHand(CreatureName creature,int amount){
         if(amount<=1){
             playerInf.get(playerTurn).creatures().remove(creature,amount);
@@ -203,13 +219,17 @@ public class HexAroundManager implements IHexAround1{
         }
     }
 
+    /**
+     * returns the creature to hand after kamikaze
+     * @param creature being returned
+     */
     void returnToHand(CreatureName creature){
         int amount = playerInf.get(playerTurn).creatures().get(creature);
         playerInf.get(playerTurn).creatures().replace(creature, amount, amount + 1);
     }
 
     public PlayerName getPlayerTurn() {
-        return playerTurn;
+        return playerTurn;//returns the current player
     }
 
     /**
@@ -223,7 +243,7 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse moveCreature(CreatureName creature, int fromX, int fromY, int toX, int toY) {
-        if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+        if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {//looks at conditions here because easier check
             return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
         }
         if(!isOccupied(fromX,fromY)|| getCreatureAt(fromX,fromY)==null) {
@@ -260,16 +280,24 @@ public class HexAroundManager implements IHexAround1{
             }
 
         }
-        if(!board.viablePath(creatureInf.get(getCreatureAt(fromX,fromY)),creature,fromX,fromY,toX,toY)) {
+        if(!board.viablePath(creatureInf.get(getCreatureAt(fromX,fromY)),creature,fromX,fromY,toX,toY)) {//checking movement property delegated to board
             return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
         }
         if(playerTurn==PlayerName.RED)
             numPlace++;
         changePlayerTurn();
-        board.updateLocation(fromX,fromY,toX,toY);
-        return board.checkEndGame();
+        board.updateLocation(fromX,fromY,toX,toY);//updating on board
+        return board.checkEndGame();//check if the movement updating causes end game
     }
 
+    /**
+     * done here to account for current player turn
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return whether player can kamikaze
+     */
     private boolean kamikazePath(int fromX, int fromY, int toX, int toY) {
         Hex from = board.getHex(fromX,fromY);
         Hex to = board.getHex(toX,toY);
@@ -283,10 +311,10 @@ public class HexAroundManager implements IHexAround1{
             board.setBlues(blueCreatures);
             redCreatures.remove(toCreature);//just remove from board
             board.setReds(redCreatures);
-            if(board.BFSColonyConnectivity(to)) {
+            if(board.BFSColonyConnectivity(to)) {//check if disconnect when not present
                 returnToHand(toCreature);
                 return true;
-            }else{
+            }else{//if disconnects, add them back to board
                 blueCreatures.add(fromCreature);
                 redCreatures.add(toCreature);
                 board.setBlues(blueCreatures);
