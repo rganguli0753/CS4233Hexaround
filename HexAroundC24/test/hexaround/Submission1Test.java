@@ -165,4 +165,23 @@ public class Submission1Test {
         assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
     }
 
+    @Test
+    void fourthTurnButterfly() throws IOException{
+        build();
+        gameManager.placeCreature(CRAB, 0, 0);
+        gameManager.placeCreature(CRAB, 0,1);
+        gameManager.placeCreature(TURTLE, 1,-1);
+        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);
+        gameManager.placeCreature(RABBIT,-1,0);
+        gameManager.placeCreature(RABBIT,-1,1);
+        MoveResponse mr = gameManager.placeCreature(DOVE,1,-2);
+        assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
+    @Test
+    void kamikazeSuccessTest() throws IOException{
+        build();
+
+    }
+
 }

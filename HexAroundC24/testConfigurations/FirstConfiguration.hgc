@@ -7,7 +7,8 @@ CREATURES:
 	dove 5 [flying]
 	rabbit 5 [jumping]
 	crab 3 [walking swapping]
-	hummingbird 3 [running kamikaze]
+	hummingbird 3 [running]
+	spider 5 [walking kamikaze]
 PLAYERS:
 	RED
 	    butterfly 1,
@@ -16,11 +17,14 @@ PLAYERS:
 	    dove 3,
 	    rabbit 1,
 	    crab 1,
-	    hummingbird 1
+	    hummingbird 1,
+	    spider 1
 	BLUE
 	    BUTTERFLY 1,
+	    grasshopper 5,
 	    turtle 3,
 	    dove 4,
 	    rabbit 1,
 	    crab 1,
-	    hummingbird 1
+	    hummingbird 1,
+	    spider 1

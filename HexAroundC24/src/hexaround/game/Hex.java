@@ -46,6 +46,10 @@ public class Hex {
         return creature;//on the certain hex is stored the certain creature
     }
 
+    public void setCreatureNull(){
+        this.creature=null;
+    }
+
     public int getDistance(Hex otherCoord){
         int deltaX = getX() - otherCoord.getX();
         int deltaY = getY() - otherCoord.getY();

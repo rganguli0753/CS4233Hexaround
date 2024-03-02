@@ -156,38 +156,55 @@ public class HexAroundManager implements IHexAround1{
      */
     @Override
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
-        Hex spot = new Hex(x, y);
-        if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
-            return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
-        }
-        if (numPlace == 0) {
-            board.placePiece(creature, new Hex(0, 0));
-            blueCreatures.add(creature);//enforces that it's placed at 0,0
-            board.setBlues(blueCreatures);
-            numPlace++;
-            changePlayerTurn();//we know that the first turn is done by blue
-            return new MoveResponse(MoveResult.OK);
-        }
-        if (playerInf.get(playerTurn).creatures().containsKey(creature)) {
-            if (!board.isOccupied(x, y)) {
-                if (!board.isDisconnected(x, y, board)) {
-                    board.placePiece(playerTurn,creature, new Hex(x, y));
-                    if (playerTurn == PlayerName.BLUE) {
-                        blueCreatures.add(creature);
-                        board.setBlues(blueCreatures);
-                    } else {
-                        redCreatures.add(creature);
-                        board.setReds(redCreatures);
-                        numPlace++;
-                    }
-                    changePlayerTurn();
-                    return board.checkEndGame();
-                }
-                return new MoveResponse(MoveResult.MOVE_ERROR, "PLACEMENT DISCONNECTED");
+        if(playerInf.get(playerTurn).creatures().containsKey(creature)){
+            int amount = playerInf.get(playerTurn).creatures().get(creature);
+            if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+                return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
             }
-            return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT NOT AVAILABLE");
+            if (numPlace == 0) {
+                board.placePiece(creature, new Hex(0, 0));
+                blueCreatures.add(creature);//enforces that it's placed at 0,0
+                board.setBlues(blueCreatures);
+                numPlace++;
+                changePlayerTurn();//we know that the first turn is done by blue
+                return new MoveResponse(MoveResult.OK);
+            }
+            if (playerInf.get(playerTurn).creatures().containsKey(creature)) {
+                if (!board.isOccupied(x, y)) {
+                    if (!board.isDisconnected(x, y, board)) {
+                        board.placePiece(playerTurn,creature, new Hex(x, y));
+                        if (playerTurn == PlayerName.BLUE) {
+                            blueCreatures.add(creature);
+                            board.setBlues(blueCreatures);
+                        } else {
+                            redCreatures.add(creature);
+                            board.setReds(redCreatures);
+                            numPlace++;
+                        }
+                        removeFromHand(creature,amount);
+                        changePlayerTurn();
+                        return board.checkEndGame();
+                    }
+                    return new MoveResponse(MoveResult.MOVE_ERROR, "PLACEMENT DISCONNECTED");
+                }
+                return new MoveResponse(MoveResult.MOVE_ERROR, "SPOT NOT AVAILABLE");
+            }
+            return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
         }
         return new MoveResponse(MoveResult.MOVE_ERROR, "CREATURE DNE");
+    }
+
+    void removeFromHand(CreatureName creature,int amount){
+        if(amount<1){
+            playerInf.get(playerTurn).creatures().remove(creature,amount);
+        }else {
+            playerInf.get(playerTurn).creatures().replace(creature, amount, amount - 1);
+        }
+    }
+
+    void returnToHand(CreatureName creature){
+        int amount = playerInf.get(playerTurn).creatures().get(creature);
+        playerInf.get(playerTurn).creatures().replace(creature, amount, amount + 1);
     }
 
     public PlayerName getPlayerTurn() {
@@ -230,6 +247,17 @@ public class HexAroundManager implements IHexAround1{
         if(creature!=getCreatureAt(fromX,fromY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "INCORRECT CREATURE MOVEMENT");
         }
+        if(hasProperty(fromX,fromY,CreatureProperty.KAMIKAZE)) {
+            if(kamikazePath(fromX,fromY,toX,toY)){
+                if(playerTurn==PlayerName.RED)
+                    numPlace++;
+                changePlayerTurn();
+                return new MoveResponse(MoveResult.OK);
+            }else{
+                return new MoveResponse(MoveResult.MOVE_ERROR, "KAMIKAZE DISCONNECTS");
+            }
+
+        }
         if(!board.viablePath(creatureInf.get(getCreatureAt(fromX,fromY)),creature,fromX,fromY,toX,toY)) {
             return new MoveResponse(MoveResult.MOVE_ERROR, "WILL DISCONNECT");
         }
@@ -238,6 +266,31 @@ public class HexAroundManager implements IHexAround1{
         changePlayerTurn();
         board.updateLocation(fromX,fromY,toX,toY);
         return board.checkEndGame();
+    }
+
+    private boolean kamikazePath(int fromX, int fromY, int toX, int toY) {
+        Hex from = board.getHex(fromX,fromY);
+        Hex to = board.getHex(toX,toY);
+        CreatureName fromCreature = from.getCreature();
+        CreatureName toCreature = to.getCreature();//made for place holding
+        from.setCreatureNull();
+        to.setCreatureNull();
+        if(board.BFSColonyConnectivity(to)){//checks if still connected after both got removed from board
+            returnToHand(toCreature);//if you werent the one doing kamikaze it should return to hand
+            if(playerTurn==PlayerName.BLUE){
+                blueCreatures.remove(fromCreature);//remove from board and hand
+                board.setBlues(blueCreatures);
+                redCreatures.remove(toCreature);//just remove from board
+                board.setReds(redCreatures);
+            }else{
+                blueCreatures.remove(toCreature);
+                board.setBlues(blueCreatures);
+                redCreatures.remove(fromCreature);
+                board.setReds(redCreatures);
+            }
+            return true;
+        }
+       return false;
     }
 }
 

@@ -112,10 +112,6 @@ public class gameBoard {
                     if (!flyPath(fromX,fromY,toX,toY))
                         return false;
                     break;
-                case KAMIKAZE:
-                    if(!kamikazePath(fromX, fromY,toX,toY))
-                        return false;
-                    break;
                 case SWAPPING:
                     if(!swapPath(fromX, fromY,toX,toY))
                         return false;
@@ -134,10 +130,6 @@ public class gameBoard {
         fromX = placeX;
         toY=fromY;
         fromY=placeY;
-        return true;
-    }
-
-    private boolean kamikazePath(int fromX, int fromY, int toX, int toY) {
         return true;
     }
 
