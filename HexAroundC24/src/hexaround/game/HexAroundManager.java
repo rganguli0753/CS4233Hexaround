@@ -158,7 +158,7 @@ public class HexAroundManager implements IHexAround1{
     public MoveResponse placeCreature(CreatureName creature, int x, int y) {
         if(playerInf.get(playerTurn).creatures().containsKey(creature)){
             int amount = playerInf.get(playerTurn).creatures().get(creature);
-            if (numPlace >= 4 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
+            if (numPlace >= 3 && !hasButterfly() && !creature.equals(CreatureName.BUTTERFLY)) {
                 return new MoveResponse(MoveResult.MOVE_ERROR, "BUTTERFLY NOT PLACED");
             }
             if (numPlace == 0) {

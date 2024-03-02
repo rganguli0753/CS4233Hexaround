@@ -171,7 +171,7 @@ public class Submission1Test {
         gameManager.placeCreature(CRAB, 0, 0);
         gameManager.placeCreature(CRAB, 0,1);
         gameManager.placeCreature(TURTLE, 1,-1);
-        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);
+        gameManager.placeCreature(TURTLE, -1, 2);
         gameManager.placeCreature(RABBIT,-1,0);
         gameManager.placeCreature(RABBIT,-1,1);
         MoveResponse mr = gameManager.placeCreature(DOVE,1,-2);
@@ -218,6 +218,22 @@ public class Submission1Test {
         gameManager.placeCreature(TURTLE,0,-1);
         MoveResponse mr =gameManager.moveCreature(SPIDER,0,1,1,0);
         assertEquals(MoveResult.MOVE_ERROR,mr.moveResult());
+    }
+
+    @Test
+    void drawGame() throws IOException{
+        build();
+        gameManager.placeCreature(BUTTERFLY, 0, 0);
+        gameManager.placeCreature(BUTTERFLY, 1, 0);
+        gameManager.placeCreature(GRASSHOPPER, -1, 0);
+        gameManager.placeCreature(GRASSHOPPER, 1, 1);
+        gameManager.placeCreature(GRASSHOPPER, 0, -1);
+        gameManager.placeCreature(GRASSHOPPER, 2, 0);
+        gameManager.placeCreature(GRASSHOPPER, 0, 1);
+        gameManager.placeCreature(GRASSHOPPER,-1,1);
+        gameManager.placeCreature(GRASSHOPPER, 2, -1);
+        MoveResponse mr = gameManager.placeCreature(GRASSHOPPER, 1, -1);
+        assertEquals(MoveResult.DRAW,mr.moveResult());
     }
 
 }
