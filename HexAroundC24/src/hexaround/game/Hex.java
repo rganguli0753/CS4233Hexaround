@@ -36,24 +36,10 @@ public class Hex {
         this.y = coord.getY();
         this.playerPiece=name;
     }
-    public Hex (CreatureName creature, Hex coord){
-        this.creature = creature;
-        this.x = coord.getX();
-        this.y = coord.getY();
-    }
+
 
     public PlayerName getPlayerPiece(){
         return this.playerPiece;
-    }
-    public void setPlayerPiece(PlayerName name){
-        this.playerPiece=name;
-    }
-
-
-
-
-    public void setCreature(CreatureName creature) {
-        this.creature = creature;
     }
 
     public CreatureName getCreature() {

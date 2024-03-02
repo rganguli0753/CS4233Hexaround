@@ -137,4 +137,21 @@ public class Submission1Test {
         assertEquals(PlayerName.BLUE,gameManager.getHexAt(0,1).getPlayerPiece());
     }
 
+    @Test
+    void runTest() throws IOException{
+        build();
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 0);//blue
+        gameManager.placeCreature(CreatureName.BUTTERFLY, 0, 1);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -1);//blue
+        gameManager.placeCreature(CreatureName.TURTLE, -1, 2);//red
+        gameManager.placeCreature(CreatureName.TURTLE, -1, -1);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 0, 2);//red
+        gameManager.placeCreature(CreatureName.DOVE, 0, -2);//blue
+        gameManager.placeCreature(CreatureName.DOVE, 1, 1);//red
+        gameManager.placeCreature(HUMMINGBIRD,1,-2);
+        gameManager.placeCreature(HUMMINGBIRD, -1,1);
+        MoveResponse mr = gameManager.moveCreature(HUMMINGBIRD,1, -2, 2,0);
+        assertEquals(MoveResult.OK,mr.moveResult());
+    }
+
 }

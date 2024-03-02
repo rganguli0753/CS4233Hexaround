@@ -7,7 +7,7 @@ CREATURES:
 	dove 5 [flying]
 	rabbit 5 [jumping]
 	crab 3 [walking swapping]
-	hummingbird [running kamikaze]
+	hummingbird 3 [running kamikaze]
 PLAYERS:
 	RED
 	    butterfly 1,
